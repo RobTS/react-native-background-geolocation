@@ -426,6 +426,18 @@ RCT_EXPORT_METHOD(getLocations:(RCTResponseSenderBlock)success failure:(RCTRespo
     }];
 }
 
+RCT_EXPORT_METHOD(getLocationsCount:(RCTResponseSenderBlock)success failure:(RCTResponseSenderBlock)failure)
+{
+    [locationManager getLocations:^(NSArray* records) {
+        NSInteger count = [records count];
+        success(@[@{
+           @"count" : @(count)
+       }]);
+    } failure:^(NSString* error) {
+        failure(@[error]);
+    }];
+}
+
 RCT_EXPORT_METHOD(getLocationsFromLine:(nonnull NSNumber*)line success:(RCTResponseSenderBlock)success failure:(RCTResponseSenderBlock)failure)
 {
     [locationManager getLocations:^(NSArray* records) {

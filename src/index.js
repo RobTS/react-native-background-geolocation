@@ -360,14 +360,25 @@ export default class BackgroundGeolocation {
     }
   }
   /**
-  * HTTP & Persistence
-  *
-  */
+   * HTTP & Persistence
+   *
+   */
   static getLocations(success, failure) {
     if (!arguments.length) {
       return NativeModule.getLocations();
     } else {
       NativeModule.getLocations().then(success).catch(failure);
+    }
+  }
+  /**
+   * HTTP & Persistence
+   *
+   */
+  static getLocationsCount(success, failure) {
+    if (!arguments.length) {
+      return NativeModule.getLocationsCount();
+    } else {
+      NativeModule.getLocationsCount().then(success).catch(failure);
     }
   }
    /**

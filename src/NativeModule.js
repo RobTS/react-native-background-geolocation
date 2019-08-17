@@ -345,6 +345,14 @@ export default class NativeModule {
     });
   }
 
+  static getLocationsCount() {
+    return new Promise((resolve, reject) => {
+      let success = (result)  => { resolve(result) }
+      let failure = (error)   => { reject(error) }
+      RNBackgroundGeolocation.getLocationsCount(success, failure);
+    });
+  }
+
   static getLocationsFromLine(line) {
     return new Promise((resolve, reject) => {
       let success = (result)  => { resolve(result) }
