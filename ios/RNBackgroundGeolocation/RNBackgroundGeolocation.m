@@ -426,7 +426,7 @@ RCT_EXPORT_METHOD(getLocations:(RCTResponseSenderBlock)success failure:(RCTRespo
     }];
 }
 
-RCT_EXPORT_METHOD(getLocationsFromLine:(NSNumber)line success:(RCTResponseSenderBlock)success failure:(RCTResponseSenderBlock)failure)
+RCT_EXPORT_METHOD(getLocationsFromLine:(NSNumber*)line success:(RCTResponseSenderBlock)success failure:(RCTResponseSenderBlock)failure)
 {
     [locationManager getLocations:^(NSArray* records) {
         NSRange theRange;
