@@ -426,6 +426,20 @@ RCT_EXPORT_METHOD(getLocations:(RCTResponseSenderBlock)success failure:(RCTRespo
     }];
 }
 
+RCT_EXPORT_METHOD(getLocationsFromLine:(NSNumber)line success:(RCTResponseSenderBlock)success failure:(RCTResponseSenderBlock)failure)
+{
+    [locationManager getLocations:^(NSArray* records) {
+        NSRange theRange;
+
+        theRange.location = line;
+        theRange.length = [wholeArray count];
+
+        success(@[records subarrayWithRange: theRange]);
+    } failure:^(NSString* error) {
+        failure(@[error]);
+    }];
+}
+
 RCT_EXPORT_METHOD(sync:(RCTResponseSenderBlock)success failure:(RCTResponseSenderBlock)failure)
 {
     [locationManager sync:^(NSArray* records) {
@@ -518,7 +532,7 @@ RCT_EXPORT_METHOD(removeGeofences:(RCTResponseSenderBlock)success failure:(RCTRe
 
 RCT_EXPORT_METHOD(getOdometer:(RCTResponseSenderBlock)success failure:(RCTResponseSenderBlock)failure)
 {
-    NSNumber *distance = @([locationManager getOdometer]);
+
     success(@[distance]);
 }
 

@@ -370,6 +370,17 @@ export default class BackgroundGeolocation {
       NativeModule.getLocations().then(success).catch(failure);
     }
   }
+   /**
+   * HTTP & Persistence
+   *
+   */
+  static getLocationsFromLine(line, success, failure) {
+    if (!arguments.length) {
+      return NativeModule.getLocationsFromLine(line);
+    } else {
+      NativeModule.getLocationsFromLine(line).then(success).catch(failure);
+    }
+  }
   /**
   * Fetch the current count of location records in database
   */
