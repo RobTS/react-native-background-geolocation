@@ -431,8 +431,8 @@ RCT_EXPORT_METHOD(getLocationsFromLine:(nonnull NSNumber*)line success:(RCTRespo
     [locationManager getLocations:^(NSArray* records) {
         NSRange theRange;
 
-        theRange.location = line;
-        theRange.length = [records count];
+        theRange.location = [line intValue];
+        theRange.length = [records count] - [line intValue];
 
         success(@[[records subarrayWithRange: theRange]]);
     } failure:^(NSString* error) {
