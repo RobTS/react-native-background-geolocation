@@ -443,8 +443,11 @@ RCT_EXPORT_METHOD(getLocationsFromLine:(nonnull NSNumber*)line success:(RCTRespo
     [locationManager getLocations:^(NSArray* records) {
         NSRange theRange;
 
-        theRange.location = [line intValue];
-        theRange.length = [records count] - [line intValue];
+        if ([records count] == 0)
+            return success(@[records]);
+        NSInteger start = [line intValue];
+        theRange.location = start;
+        theRange.length = [records count];
 
         success(@[[records subarrayWithRange: theRange]]);
     } failure:^(NSString* error) {
