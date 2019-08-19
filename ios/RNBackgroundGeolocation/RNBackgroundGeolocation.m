@@ -444,7 +444,7 @@ RCT_EXPORT_METHOD(getLocationsFromLine:(nonnull NSNumber*)line success:(RCTRespo
         NSRange theRange;
         NSInteger lineNumber = [line intValue];
         NSInteger recordsCount = [records count];
-        if ([records count] == 0)
+        if (recordsCount == 0)
             return success(@[[NSArray new]]);
         if (lineNumber >= recordsCount)
             return success(@[[NSArray new]]);
