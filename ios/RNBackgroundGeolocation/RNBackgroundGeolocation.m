@@ -442,14 +442,16 @@ RCT_EXPORT_METHOD(getLocationsFromLine:(nonnull NSNumber*)line success:(RCTRespo
 {
     [locationManager getLocations:^(NSArray* records) {
         NSRange theRange;
-
+        NSInteger lineNumber = [line intValue];
+        NSInteger recordsCount = [records count];
         if ([records count] == 0)
-            return success(@[records]);
-        NSInteger start = [line intValue];
-        theRange.location = start;
-        theRange.length = [records count];
-
-        success(@[[records subarrayWithRange: theRange]]);
+            return success(@[[NSArray new]]);
+        if (lineNumber > recordsCount - 1)
+            return success(@[[NSArray new]]);
+        theRange.location = lineNumber;
+        theRange.length = recordsCount - lineNumber;
+        NSArray* recordsDiff  = [records subarrayWithRange: theRange];
+        success(@[recordsDiff]);
     } failure:^(NSString* error) {
         failure(@[error]);
     }];
