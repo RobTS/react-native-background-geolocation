@@ -81,6 +81,7 @@ declare module "react-native-background-geolocation" {
     * | 1     | Location permission denied  |
     * | 2     | Network error               |
     * | 408   | Location timeout            |
+    * | 499   | Location request cancelled  |
 	*/
 	type LocationError = 0 | 1 | 2 | 408;
 
@@ -96,4 +97,17 @@ declare module "react-native-background-geolocation" {
 	type HttpMethod = "POST" | "PUT" | "OPTIONS";
 
 	type PersistMode = -1 | 0 | 1 | 2;
+
+	type Extras = {[key: string]: string|null|number|boolean|Extras|string[]|number[]|boolean[]|Extras[]};
+
+	/**
+	* Controls ordering of [[SQLQuery.order]]
+	*
+	* | Name                 | Value |
+	* |----------------------|-------|
+	* | [[Logger.ORDER_ASC]] | `1`   |
+	* | [[Logger.ORDER_DESC]]| `-1`  |
+	*/
+	type SQLQueryOrder = -1 | 1;
+
 }

@@ -85,14 +85,14 @@ typedef enum tsLocationType : NSInteger {
  */
 @property (nonatomic, readonly) NSString *event;
 
--(id) initWithLocation:(CLLocation*)location;
--(id) initWithLocation:(CLLocation*)location type:(enum tsLocationType)type extras:(NSDictionary*)extras;
--(id) initWithLocation:(CLLocation*)location geofence:(NSDictionary*)geofenceData;
+-(instancetype) initWithLocation:(CLLocation*)location;
+-(instancetype) initWithLocation:(CLLocation*)location type:(enum tsLocationType)type extras:(NSDictionary*)extras;
+-(instancetype) initWithLocation:(CLLocation*)location geofence:(NSDictionary*)geofenceData;
 
 /**
  * Render location-data as JSON string
  */
-- (NSString*)toJson:(NSError**)error;
+- (NSData*)toJson:(NSError**)error;
 /**
  * Render location-data as NSDictionary
  */

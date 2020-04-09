@@ -5,8 +5,11 @@ import {
   AppRegistry
 } from "react-native"
 
+import * as Events from './Events';
 import NativeModule from './NativeModule';
 import DeviceSettings from './DeviceSettings';
+import Logger from './Logger';
+import TransistorAuthorizationToken from './TransistorAuthorizationToken';
 
 let _deviceSettingsInstance = null;
 
@@ -160,7 +163,7 @@ export default class BackgroundGeolocation {
   */
   static addListener(event, success, failure) {
     if (typeof(event) != 'string')      { throw "BackgroundGeolocation#on must be provided a {String} event as 1st argument." }
-    if (NativeModule.EVENTS.indexOf(event) < 0)      { throw "BackgroundGeolocation#on - Unknown event '" + event + "'" }
+    if (Events[event])      { throw "BackgroundGeolocation#on - Unknown event '" + event + "'" }
     if (typeof(success) != 'function')  { throw "BackgroundGeolocation#on must be provided a callback as 2nd argument.  If you're attempting to use the Promise API to listen to an event, it won't work, since a Promise can only evaluate once, while the callback function must be executed for each event." }
     NativeModule.addListener.apply(NativeModule, arguments);
   }
@@ -170,55 +173,59 @@ export default class BackgroundGeolocation {
   }
 
   static onLocation(success, failure) {
-    this.addListener('location', success, failure);
+    this.addListener(Events.LOCATION, success, failure);
   }
 
   static onMotionChange(callback) {
-    this.addListener('motionchange', callback);
+    this.addListener(Events.MOTIONCHANGE, callback);
   }
 
   static onHttp(callback) {
-    this.addListener('http', callback);
+    this.addListener(Events.HTTP, callback);
   }
 
   static onHeartbeat(callback) {
-    this.addListener('heartbeat', callback);
+    this.addListener(Events.HEARTBEAT, callback);
   }
 
   static onProviderChange(callback) {
-    this.addListener('providerchange', callback);
+    this.addListener(Events.PROVIDERCHANGE, callback);
   }
 
   static onActivityChange(callback) {
-    this.addListener('activitychange', callback);
+    this.addListener(Events.ACTIVITYCHANGE, callback);
   }
 
   static onGeofence(callback) {
-    this.addListener('geofence', callback);
+    this.addListener(Events.GEOFENCE, callback);
   }
 
   static onGeofencesChange(callback) {
-    this.addListener('geofenceschange', callback);
+    this.addListener(Events.GEOFENCESCHANGE, callback);
   }
 
   static onSchedule(callback) {
-    this.addListener('schedule', callback);
+    this.addListener(Events.SCHEDULE, callback);
   }
 
   static onEnabledChange(callback) {
-    this.addListener('enabledchange', callback);
+    this.addListener(Events.ENABLEDCHANGE, callback);
   }
 
   static onConnectivityChange(callback) {
-    this.addListener('connectivitychange', callback);
+    this.addListener(Events.CONNECTIVITYCHANGE, callback);
   }
 
   static onPowerSaveChange(callback) {
-    this.addListener('powersavechange', callback);
+    this.addListener(Events.POWERSAVECHANGE, callback);
   }
 
   static onNotificationAction(callback) {
-    this.addListener('notificationaction', callback);
+    this.addListener(Events.NOTIFICATIONACTION, callback);
+  }
+
+  static onAuthorization(callback) {
+    this.addListener(Events.AUTHORIZATION, callback);
   }
 
   /**
@@ -226,7 +233,7 @@ export default class BackgroundGeolocation {
   */
   static removeListener(event, handler, success, failure) {
     if (typeof(event) != 'string')      { throw "BackgroundGeolocation#un must be provided a {String} event as 1st argument" }
-    if (NativeModule.EVENTS.indexOf(event) < 0)      { throw "BackgroundGeolocation#un - Unknown event '" + event + "'" }
+    if (!Events[event.toUpperCase()])      { throw "BackgroundGeolocation#un - Unknown event '" + event + "'" }
     NativeModule.removeListener.apply(NativeModule, arguments);
   }
   // @alias #removeListener
@@ -527,6 +534,26 @@ export default class BackgroundGeolocation {
     }
   }
   /**
+  * Fetch a single geofence
+  */
+  static getGeofence(identifier, success, failure) {
+    if (arguments.length == 1) {
+      return NativeModule.getGeofence(identifier);
+    } else {
+      NativeModule.getGeofence(identifier).then(success).catch(failure);
+    }
+  }
+  /**
+  * Return true if geofence was added
+  */
+  static geofenceExists(identifier, success, failure) {
+    if (arguments.length == 1) {
+      return NativeModule.geofenceExists(identifier);
+    } else {
+      NativeModule.geofenceExists(identifier).then(success).catch(failure);
+    }
+  }
+  /**
   * Fetch the current position from location-services
   */
   static getCurrentPosition(options, success, failure) {
@@ -575,31 +602,34 @@ export default class BackgroundGeolocation {
   * Fetch the entire contents of log database returned as a String
   */
   static getLog(success, failure) {
+    console.warn('[' + TAG + ' getLog] Deprecated.  Use BackgroundGeolocation.logger.getLog');
     if (!arguments.length) {
-      return NativeModule.getLog();
+      return Logger.getLog();
     } else {
-      NativeModule.getLog().then(success).catch(failure);
+      Logger.getLog().then(success).catch(failure);
     }
   }
   /**
   * Destroy all contents of log database
   */
   static destroyLog(success, failure) {
+    console.warn('[' + TAG + ' destroyLog] Deprecated.  Use BackgroundGeolocation.logger.destroyLog');
     if (!arguments.length) {
-      return NativeModule.destroyLog();
+      return Logger.destroyLog();
     } else {
-      NativeModule.destroyLog().then(success).catch(failure);
+      Logger.destroyLog().then(success).catch(failure);
     }
   }
   /**
   * Open deafult email client on device to email the contents of log database attached as a compressed file attachement
   */
   static emailLog(email, success, failure) {
+    console.warn('[' + TAG + ' emailLog] Deprecated.  Use BackgroundGeolocation.logger.emailLog');
     if (typeof(email) != 'string') { throw TAG + "#emailLog requires an email address as 1st argument"}
     if (arguments.length == 1) {
-      return NativeModule.emailLog(email);
+      return Logger.emailLog(email);
     } else {
-      NativeModule.emailLog(email).then(success).catch(failure);
+      Logger.emailLog(email).then(success).catch(failure);
     }
   }
   /**
@@ -632,24 +662,30 @@ export default class BackgroundGeolocation {
       NativeModule.playSound(soundId).then(success).catch(failure);
     }
   }
+
+  static findOrCreateTransistorAuthorizationToken(orgname, username, url) {
+    return TransistorAuthorizationToken.findOrCreate(orgname, username, url);
+  }
+
+  static destroyTransistorAuthorizationToken(url) {
+    return TransistorAuthorizationToken.destroy(url);
+  }
+
   /**
   * Insert a log message into the plugin's log database
   */
-  static get logger() { return NativeModule.logger; }
+  static get logger() { return Logger; }
 
-  static transistorTrackerParams(deviceInfo) {
-    if (typeof(deviceInfo) === undefined) { throw "An instance of react-native-device-info must be provided"; }
-    if (typeof(deviceInfo.getModel) !== 'function') { throw "Invalid instance of DeviceInfo"; }
+  static getDeviceInfo() {
+    return NativeModule.getDeviceInfo();
+  }
+
+  static async transistorTrackerParams() {
+    let deviceInfo = await NativeModule.getDeviceInfo();
+    deviceInfo.uuid = deviceInfo.model;
     return {
-      device: {
-        uuid: deviceInfo.getModel().replace(/[\s\.,]/g, '-'),
-        model: deviceInfo.getModel(),
-        platform: deviceInfo.getSystemName(),
-        manufacturer: deviceInfo.getManufacturer(),
-        version: deviceInfo.getSystemVersion(),
-        framework: 'ReactNative'
-      }
-    }
+      device: deviceInfo
+    };
   }
 
   /**

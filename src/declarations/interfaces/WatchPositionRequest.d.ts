@@ -3,16 +3,16 @@ declare module "react-native-background-geolocation" {
   * Options provided to [[BackgroundGeolocation.watchPosition]].
   *
   * @example
-  * ```javascript
+  * ```typescript
   * BackgroundGeolocation.watchPosition((location) => {
-	*   console.log('[watchPosition] -', location);
+	*   console.log("[watchPosition] -", location);
   * }, (errorCode) => {
-	*   console.log('[watchPosition] ERROR -', errorCode);
+	*   console.log("[watchPosition] ERROR -", errorCode);
   * }, {
 	*   interval: 1000,
 	*   desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
 	*   persist: true,
-	*   extras: {foo: 'bar'},
+	*   extras: {foo: "bar"},
 	*   timeout: 60000
   * });
   * ```
@@ -35,7 +35,7 @@ declare module "react-native-background-geolocation" {
     /**
     * Arbitrary key/values to append to each recorded location.
     */
-    extras?: Object;
+    extras?: Extras;
     /**
     * Time in `milliseconds` to wait before firing error callback when location fails to arrive.
     * Defaults to `60000`.

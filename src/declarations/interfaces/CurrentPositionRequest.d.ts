@@ -3,7 +3,7 @@ declare module "react-native-background-geolocation" {
   * Options provided to [[getCurrentPosition]].
   *
   * @example
-  * ```javascript
+  * ```typescript
   * let location = await BackgroundGeolocation.getCurrentPosition({
   *   timeout: 30,          // 30 second timeout to fetch location
   *   persist: true,        // Defaults to state.enabled
@@ -40,6 +40,6 @@ declare module "react-native-background-geolocation" {
     /**
     * Optional meta-data to attach to the location. These `extras` will be merged to the configured [[Config.extras]] and persisted / POSTed to your server (if you've configured a [[Config.url]].
     */
-    extras?: Object;
+    extras?: Extras;
   }
 }

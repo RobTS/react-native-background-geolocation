@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../globals.html" class="title">[API Docs] React Native Background Geolocation</a>&nbsp;<span class="tsd-flag ts-flagOptional ts-flagVersion">v 3.2.0</span>
+					<a href="../globals.html" class="title">[API Docs] React Native Background Geolocation</a>&nbsp;<span class="tsd-flag ts-flagOptional ts-flagVersion">v 3.6.2</span>
 				</div>
 				<div class="" id="tsd-widgets">
 					<a class="github" href="https://github.com/transistorsoft/react-native-background-geolocation">Github</a>
@@ -60,28 +60,28 @@
 					<p>The following configuration options are used to configure the SDK via the methods <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#ready">BackgroundGeolocation.ready</a> and <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#setconfig">BackgroundGeolocation.setConfig</a>.</p>
 					<dl class="tsd-comment-tags">
 						<dt class="tsd-comment-tag-example">example</dt>
-						<dd><pre><code class="language-javascript">BackgroundGeolocation.ready({
-  <span class="hljs-attr">desiredAccuracy</span>: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
-  <span class="hljs-attr">distanceFilter</span>: <span class="hljs-number">10</span>,
-  <span class="hljs-attr">stopOnTerminate</span>: <span class="hljs-literal">false</span>,
-  <span class="hljs-attr">startOnBoot</span>: <span class="hljs-literal">true</span>,
-  <span class="hljs-attr">url</span>: <span class="hljs-string">'http://my.server.com'</span>,
-  <span class="hljs-attr">params</span>: {
+						<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
+  desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
+  distanceFilter: <span class="hljs-number">10</span>,
+  stopOnTerminate: <span class="hljs-literal">false</span>,
+  startOnBoot: <span class="hljs-literal">true</span>,
+  url: <span class="hljs-string">"http://my.server.com"</span>,
+  params: {
     <span class="hljs-string">"user_id"</span>: <span class="hljs-number">123</span>
   },
-  <span class="hljs-attr">headers</span>: {
+  headers: {
     <span class="hljs-string">"my-auth-token"</span>:<span class="hljs-string">"secret-key"</span>
   }
 }).then(<span class="hljs-function">(<span class="hljs-params">state</span>) =&gt;</span> {
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'[ready] BackgroundGeolocation is configured and ready to use'</span>);
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"[ready] BackgroundGeolocation is configured and ready to use"</span>);
 
   BackgroundGeolocation.start();
 })
 
 <span class="hljs-comment">// Or with #setConfig</span>
 BackgroundGeolocation.setConfig({
-  <span class="hljs-attr">extras</span>: {<span class="hljs-attr">route_id</span>: <span class="hljs-number">1234</span>},
-  <span class="hljs-attr">url</span>: <span class="hljs-string">'https://my.new.server.com'</span>
+  extras: {route_id: <span class="hljs-number">1234</span>},
+  url: <span class="hljs-string">"https://my.new.server.com"</span>
 })</code></pre>
 							<h2 id="geolocation-options">Geolocation Options</h2>
 							<h3 id="-geolocation-common-options">[Geolocation] Common Options</h3>
@@ -163,6 +163,11 @@ BackgroundGeolocation.setConfig({
 										<td><code>Object</code></td>
 										<td>When you configure the plugin <a href="_react_native_background_geolocation_.config.html#locationauthorizationrequest">locationAuthorizationRequest</a> <code>Always</code> or <code>WhenInUse</code> and the user <em>changes</em> that value in the app&#39;s location-services settings or <em>disables</em> location-services, the plugin will display an Alert directing the user to the <strong>Settings</strong> screen.</td>
 									</tr>
+									<tr>
+										<td><a href="_react_native_background_geolocation_.config.html#showsbackgroundlocationindicator">showsBackgroundLocationIndicator</a></td>
+										<td><code>Boolean</code></td>
+										<td>A <code>boolean</code> indicating whether the status bar changes its appearance when an app uses location services in the background with <code>Always</code> authorization.</td>
+									</tr>
 							</tbody></table>
 							<h3 id="-geolocation-android-options">[Geolocation] Android Options</h3>
 							<table>
@@ -219,6 +224,11 @@ BackgroundGeolocation.setConfig({
 										<td><code>Boolean</code></td>
 										<td><strong>Default: <code>false</code></strong>.  Disable accelerometer-based <strong>Stop-detection System</strong>. ⚠️ Not recommended</td>
 									</tr>
+									<tr>
+										<td><a href="_react_native_background_geolocation_.config.html#disablemotionactivityupdates">disableMotionActivityUpdates</a></td>
+										<td><code>Boolean</code></td>
+										<td><strong>Default: <code>false</code></strong>.  Disable motion-activity updates (eg: &quot;walking&quot;, &quot;in_vehicle&quot;). Requires permission from the user. ⚠️ The plugin is <strong>HIGHLY</strong> optimized to use the Motion API for improved battery performance.  You are <strong>STRONLY</strong> recommended to <strong>NOT</strong> disable this.</td>
+									</tr>
 							</tbody></table>
 							<h3 id="-activity-recognition-ios-options">[Activity Recognition] iOS Options</h3>
 							<table>
@@ -233,11 +243,6 @@ BackgroundGeolocation.setConfig({
 										<td><a href="_react_native_background_geolocation_.config.html#activitytype">activityType</a></td>
 										<td><a href="../modules/_react_native_background_geolocation_.html#activitytype">ActivityType</a></td>
 										<td><strong>Default: <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#activity_type_other">BackgroundGeolocation.ACTIVITY_TYPE_OTHER</a></strong>.  Presumably, this affects ios GPS algorithm.  See <a href="https://developer.apple.com/library/ios/documentation/CoreLocation/Reference/CLLocationManager_Class/CLLocationManager/CLLocationManager.html#//apple_ref/occ/instp/CLLocationManager/activityType">Apple docs</a> for more information</td>
-									</tr>
-									<tr>
-										<td><a href="_react_native_background_geolocation_.config.html#disablemotionactivityupdates">disableMotionActivityUpdates</a></td>
-										<td><code>Boolean</code></td>
-										<td><strong>Default: <code>false</code></strong>.  Disable iOS motion-activity updates (eg: &quot;walking&quot;, &quot;in_vehicle&quot;).  This feature requires a device having the <strong>M7</strong> co-processor (ie: iPhone 5s and up). ⚠️ The plugin is <strong>HIGHLY</strong> optimized to use this for improved battery performance.  You are <strong>STRONLY</strong> recommended to <strong>NOT</strong> disable this.</td>
 									</tr>
 							</tbody></table>
 							<h2 id="http-persistence-options">HTTP &amp; Persistence Options</h2>
@@ -403,36 +408,6 @@ BackgroundGeolocation.setConfig({
 										<td><a href="_react_native_background_geolocation_.notification.html">Notification</a></td>
 										<td>Configures the required persistent <a href="_react_native_background_geolocation_.notification.html">Notification</a> of the foreground service.</td>
 									</tr>
-									<tr>
-										<td><a href="_react_native_background_geolocation_.config.html#forcereloadonmotionchange">forceReloadOnMotionChange</a></td>
-										<td><code>Boolean</code></td>
-										<td><strong>Default: <code>false</code></strong>.  Launch your app whenever the <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#onmotionchange">BackgroundGeolocation.onMotionChange</a> event fires.</td>
-									</tr>
-									<tr>
-										<td><a href="_react_native_background_geolocation_.config.html#forcereloadonlocationchange">forceReloadOnLocationChange</a></td>
-										<td><code>Boolean</code></td>
-										<td><strong>Default: <code>false</code></strong>.  Launch your app whenever the <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#onlocation">BackgroundGeolocation.onLocation</a> event fires.</td>
-									</tr>
-									<tr>
-										<td><a href="_react_native_background_geolocation_.config.html#forcereloadongeofence">forceReloadOnGeofence</a></td>
-										<td><code>Boolean</code></td>
-										<td><strong>Default: <code>false</code></strong>.  Launch your app whenever the <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#ongeofence">BackgroundGeolocation.onGeofence</a> event fires.</td>
-									</tr>
-									<tr>
-										<td><a href="_react_native_background_geolocation_.config.html#forcereloadonheartbeat">forceReloadOnHeartbeat</a></td>
-										<td><code>Boolean</code></td>
-										<td><strong>Default: <code>false</code></strong>.  Launch your app whenever the <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#onheartbeat">BackgroundGeolocation.onHeartbeat</a> event fires.</td>
-									</tr>
-									<tr>
-										<td><a href="_react_native_background_geolocation_.config.html#forcereloadonschedule">forceReloadOnSchedule</a></td>
-										<td><code>Boolean</code></td>
-										<td><strong>Default: <code>false</code></strong>.  Launch your app whenever a <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#onschedule">BackgroundGeolocation.onSchedule</a> event fires.</td>
-									</tr>
-									<tr>
-										<td><a href="_react_native_background_geolocation_.config.html#forcereloadonboot">forceReloadOnBoot</a></td>
-										<td><code>Boolean</code></td>
-										<td><strong>Default: <code>false</code></strong>.  If the user reboots the device with the plugin configured for <a href="_react_native_background_geolocation_.config.html#startonboot">startOnBoot</a>: true, your app will launch when the device is rebooted.</td>
-									</tr>
 							</tbody></table>
 							<h2 id="geofencing-options">Geofencing Options</h2>
 							<ul>
@@ -527,6 +502,7 @@ BackgroundGeolocation.setConfig({
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#activityrecognitioninterval" class="tsd-kind-icon">activity<wbr>Recognition<wbr>Interval</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#activitytype" class="tsd-kind-icon">activity<wbr>Type</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#allowidenticallocations" class="tsd-kind-icon">allow<wbr>Identical<wbr>Locations</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#authorization" class="tsd-kind-icon">authorization</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#autosync" class="tsd-kind-icon">auto<wbr>Sync</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#autosyncthreshold" class="tsd-kind-icon">auto<wbr>Sync<wbr>Threshold</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#batchsync" class="tsd-kind-icon">batch<wbr>Sync</a></li>
@@ -534,6 +510,7 @@ BackgroundGeolocation.setConfig({
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#defertime" class="tsd-kind-icon">defer<wbr>Time</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#desiredaccuracy" class="tsd-kind-icon">desired<wbr>Accuracy</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#desiredodometeraccuracy" class="tsd-kind-icon">desired<wbr>Odometer<wbr>Accuracy</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#disableautosynconcellular" class="tsd-kind-icon">disable<wbr>Auto<wbr>Sync<wbr>OnCellular</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#disableelasticity" class="tsd-kind-icon">disable<wbr>Elasticity</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#disablelocationauthorizationalert" class="tsd-kind-icon">disable<wbr>Location<wbr>Authorization<wbr>Alert</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#disablemotionactivityupdates" class="tsd-kind-icon">disable<wbr>Motion<wbr>Activity<wbr>Updates</a></li>
@@ -542,6 +519,7 @@ BackgroundGeolocation.setConfig({
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#elasticitymultiplier" class="tsd-kind-icon">elasticity<wbr>Multiplier</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#enableheadless" class="tsd-kind-icon">enable<wbr>Headless</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#enabletimestampmeta" class="tsd-kind-icon">enable<wbr>Timestamp<wbr>Meta</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#encrypt" class="tsd-kind-icon">encrypt</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#extras" class="tsd-kind-icon">extras</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#fastestlocationupdateinterval" class="tsd-kind-icon">fastest<wbr>Location<wbr>Update<wbr>Interval</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#forcereloadonboot" class="tsd-kind-icon">force<wbr>Reload<wbr>OnBoot</a></li>
@@ -573,6 +551,7 @@ BackgroundGeolocation.setConfig({
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#maxrecordstopersist" class="tsd-kind-icon">max<wbr>Records<wbr>ToPersist</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#method" class="tsd-kind-icon">method</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#minimumactivityrecognitionconfidence" class="tsd-kind-icon">minimum<wbr>Activity<wbr>Recognition<wbr>Confidence</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#motiontriggerdelay" class="tsd-kind-icon">motion<wbr>Trigger<wbr>Delay</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#notification" class="tsd-kind-icon">notification</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#notificationchannelname" class="tsd-kind-icon">notification<wbr>Channel<wbr>Name</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#notificationcolor" class="tsd-kind-icon">notification<wbr>Color</a></li>
@@ -588,6 +567,7 @@ BackgroundGeolocation.setConfig({
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#reset" class="tsd-kind-icon">reset</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#schedule" class="tsd-kind-icon">schedule</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#scheduleusealarmmanager" class="tsd-kind-icon">schedule<wbr>Use<wbr>Alarm<wbr>Manager</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#showsbackgroundlocationindicator" class="tsd-kind-icon">shows<wbr>Background<wbr>Location<wbr>Indicator</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#speedjumpfilter" class="tsd-kind-icon">speed<wbr>Jump<wbr>Filter</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#startonboot" class="tsd-kind-icon">start<wbr>OnBoot</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#stationaryradius" class="tsd-kind-icon">stationary<wbr>Radius</a></li>
@@ -596,6 +576,7 @@ BackgroundGeolocation.setConfig({
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#stoponstationary" class="tsd-kind-icon">stop<wbr>OnStationary</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#stoponterminate" class="tsd-kind-icon">stop<wbr>OnTerminate</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#stoptimeout" class="tsd-kind-icon">stop<wbr>Timeout</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#transistorauthorizationtoken" class="tsd-kind-icon">transistor<wbr>Authorization<wbr>Token</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#triggeractivities" class="tsd-kind-icon">trigger<wbr>Activities</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#url" class="tsd-kind-icon">url</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_react_native_background_geolocation_.config.html#usesignificantchangesonly" class="tsd-kind-icon">use<wbr>Significant<wbr>Changes<wbr>Only</a></li>
@@ -652,8 +633,8 @@ BackgroundGeolocation.setConfig({
 						</tbody></table>
 						<dl class="tsd-comment-tags">
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">BackgroundGeolocation.ready({
-  <span class="hljs-attr">activityType</span>: BackgroundGeolocation.ACTIVITY_TYPE_OTHER
+							<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
+  activityType: BackgroundGeolocation.ACTIVITY_TYPE_OTHER
 );</code></pre>
 								<h3 id="-see-also-">ℹ️ See also:</h3>
 								<ul>
@@ -683,6 +664,51 @@ BackgroundGeolocation.setConfig({
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+					<a name="authorization" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> authorization</h3>
+					<div class="tsd-signature tsd-kind-icon">authorization<span class="tsd-signature-symbol">:</span> <a href="_react_native_background_geolocation_.authorization.html" class="tsd-signature-type">Authorization</a></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Configures the SDK for <a href="_react_native_background_geolocation_.authorization.html">Authorization</a> with your server (eg: <a href="https://jwt.io/">JSON Web Token</a>).</p>
+						</div>
+						<h3 id="-only-jwt-is-currently-supported-">⚠️ Only <a href="https://jwt.io/">JWT</a> is currently supported.</h3>
+						<p>The SDK will automatically apply the supplied token to HTTP request&#39;s Authorization header, eg:</p>
+						<p><code>&quot;Authorization&quot;: &quot;Bearer abcd1234...&quot;</code></p>
+						<p>If provided with <a href="_react_native_background_geolocation_.authorization.html#refreshurl">Authorization.refreshUrl</a> and <a href="_react_native_background_geolocation_.authorization.html#expires">Authorization.expires</a>, the SDK can automatically re-register for a new token after expiration.</p>
+						<h3 id="-see-also-">ℹ️ See also:</h3>
+						<ul>
+							<li><a href="_react_native_background_geolocation_.authorization.html">Authorization</a>.</li>
+							<li><a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#onauthorization">BackgroundGeolocation.onAuthorization</a>.</li>
+						</ul>
+						<dl class="tsd-comment-tags">
+							<dt class="tsd-comment-tag-example">example</dt>
+							<dd><pre><code><span class="hljs-comment">// Get a reference to your app's Authorization token.</span>
+let myToken = this.getMyAuthorizationToken();
+
+BackgroundGeolocation.onAuthorization((event:AuthorizationEvent) =&gt; {
+  console.log(<span class="hljs-string">"[authorization]"</span>, authorization.success, authorization.response, authorization.error);
+});
+
+BackgroundGeolocation.ready({
+<span class="hljs-symbol">  url:</span> <span class="hljs-string">"https://app.your.server.com/users/locations"</span>,
+<span class="hljs-symbol">  autoSync:</span> true,
+<span class="hljs-symbol">  authorization:</span> {
+<span class="hljs-symbol">    strategy:</span> <span class="hljs-string">"JWT"</span>,
+<span class="hljs-symbol">    accessToken:</span> myToken.accessToken,
+<span class="hljs-symbol">    refreshToken:</span> myToken.refreshToken,
+<span class="hljs-symbol">    refreshUrl:</span> <span class="hljs-string">"https://auth.your.server.com/tokens"</span>,
+<span class="hljs-symbol">    refreshPayload:</span> {
+<span class="hljs-symbol">      the_refresh_token_field_name:</span> <span class="hljs-string">"{refreshToken}"</span>
+    },
+<span class="hljs-symbol">    expires:</span> myToken.expiresAt
+  }
+});</code></pre></dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
 					<a name="autosync" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> auto<wbr>Sync</h3>
 					<div class="tsd-signature tsd-kind-icon">auto<wbr>Sync<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
@@ -701,7 +727,7 @@ BackgroundGeolocation.setConfig({
 							</dd>
 							<dt class="tsd-comment-tag-example">example</dt>
 							<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
-  url: <span class="hljs-string">'http://my.server.com/locations'</span>,
+  url: <span class="hljs-string">"http://my.server.com/locations"</span>,
   autoSync: <span class="hljs-literal">true</span>,
   params: {
     user_id: <span class="hljs-number">1234</span>
@@ -744,7 +770,7 @@ BackgroundGeolocation.setConfig({
 							</dd>
 							<dt class="tsd-comment-tag-example">example</dt>
 							<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
-  url: <span class="hljs-string">'http://my.server.com/locations'</span>,
+  url: <span class="hljs-string">"http://my.server.com/locations"</span>,
   autoSync: <span class="hljs-literal">true</span>,
   autoSyncThreshold: <span class="hljs-number">5</span>,
   batchSync: <span class="hljs-literal">true</span>
@@ -783,7 +809,7 @@ Locations: <span class="hljs-variable">__</span>|<span class="hljs-variable">__<
 							<dt class="tsd-comment-tag-example">example</dt>
 							<dd><pre><code class="language-typescript"><span class="hljs-comment">// Using batchSync: true</span>
 BackgroundGeolocation.ready({
-  url: <span class="hljs-string">'http://my.server.com/locations'</span>,
+  url: <span class="hljs-string">"http://my.server.com/locations"</span>,
   autoSync: <span class="hljs-literal">true</span>,
   autoSyncThreshold: <span class="hljs-number">5</span>,
   batchSync: <span class="hljs-literal">true</span>
@@ -797,7 +823,7 @@ Locations: <span class="hljs-variable">__</span>|<span class="hljs-variable">__<
 							<dt class="tsd-comment-tag-example">example</dt>
 							<dd><pre><code class="language-typescript"><span class="hljs-comment">// With batchSync: false</span>
 BackgroundGeolocation.ready({
-  url: <span class="hljs-string">'http://my.server.com/locations'</span>,
+  url: <span class="hljs-string">"http://my.server.com/locations"</span>,
   autoSync: <span class="hljs-literal">true</span>,
   autoSyncThreshold: <span class="hljs-number">5</span>,
   batchSync: <span class="hljs-literal">false</span>
@@ -850,97 +876,107 @@ Locations: <span class="hljs-variable">__</span>|<span class="hljs-variable">__<
 										</tr>
 										<tr>
 											<td><code>LOCATION_SAMPLE</code></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/7inowa0folzlal3/location-sample.mp3?dl=0"></audio></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/8bgiyifowyf9c7n/tslocationmanager_click_tap_done_checkbox5_full_vol.wav?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/8gp2nkzza2hql4r/location-sample.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropboxusercontent.com/s/8bgiyifowyf9c7n/tslocationmanager_click_tap_done_checkbox5_full_vol.wav?dl=0"></audio></td>
 										</tr>
 										<tr>
 											<td><code>LOCATION_ERROR</code></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/lwmx6j2ddzke1c7/location-error.mp3?dl=0"></audio></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/wadrz2x6elhc65l/tslocationmanager_digi_warn.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/l3rmf99rj3g5u6b/location-error.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropboxusercontent.com/s/wadrz2x6elhc65l/tslocationmanager_digi_warn.mp3?dl=0"></audio></td>
 										</tr>
 										<tr>
 											<td><code>LOCATION_SERVICES_ON</code></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/4cith8fg58bf5rh/location-services-on.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/urbjiqn0f4g1jhi/location-services-on.mp3?dl=0"></audio></td>
 											<td>n/a</td>
 										</tr>
 										<tr>
 											<td><code>LOCATION_SERVICES_OFF</code></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/vdntndpzl1ebeq2/location-services-off.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/0wb7qajfb0yy9w0/location-services-off.mp3?dl=0"></audio></td>
 											<td>n/a</td>
 										</tr>
 										<tr>
 											<td><code>STATIONARY_GEOFENCE_EXIT</code></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/6voj31fmmoqhveb/motionchange-true.mp3?dl=0"></audio></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/gjgv51pot3h2n3t/tslocationmanager_zap_fast.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/p8ee60qvfgx4vi5/motionchange-true.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropboxusercontent.com/s/gjgv51pot3h2n3t/tslocationmanager_zap_fast.mp3?dl=0"></audio></td>
 										</tr>
 										<tr>
 											<td><code>MOTIONCHANGE_FALSE</code></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/qjduicy3c9d4yfv/motionchange-false.mp3?dl=0"></audio></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/fm4j2t8nqzd5856/tslocationmanager_marimba_drop.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/xk00hsfi87nrw3q/motionchange-false.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropboxusercontent.com/s/fm4j2t8nqzd5856/tslocationmanager_marimba_drop.mp3?dl=0"></audio></td>
 										</tr>
 										<tr>
 											<td><code>MOTIONCHANGE_TRUE</code></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/6voj31fmmoqhveb/motionchange-true.mp3?dl=0"></audio></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/n5mn6tr7x994ivg/tslocationmanager_chime_short_chord_up.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/p8ee60qvfgx4vi5/motionchange-true.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropboxusercontent.com/s/n5mn6tr7x994ivg/tslocationmanager_chime_short_chord_up.mp3?dl=0"></audio></td>
+										</tr>
+										<tr>
+											<td><code>MOTION_TRIGGER_DELAY_START</code></td>
+											<td>n/a</td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropboxusercontent.com/s/cb3fa0zp0c4xjmt/tslocationmanager_dot_retry.wav?dl=0"></audio></td>
+										</tr>
+										<tr>
+											<td><code>MOTION_TRIGGER_DELAY_CANCEL</code></td>
+											<td>n/a</td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropboxusercontent.com/s/4pg3r4xooi9pe0g/tslocationmanager_dot_stopaction2.wav?dl=0"></audio></td>
 										</tr>
 										<tr>
 											<td><code>STOP_DETECTION_DELAY_INITIATED</code></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/34jf8sifr5nkyie/stopDetectionDelay.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/y898zopjfolx42d/stopDetectionDelay.mp3?dl=0"></audio></td>
 											<td>n/a</td>
 										</tr>
 										<tr>
 											<td><code>STOP_TIMER_ON</code></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/s6dou5vv55glq5w/stop-timeout-start.mp3?dl=0"></audio></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/q4a9pf0vlztfafh/tslocationmanager_chime_bell_confirm.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/7mjcmnszhjo6ywj/stop-timeout-start.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropboxusercontent.com/s/q4a9pf0vlztfafh/tslocationmanager_chime_bell_confirm.mp3?dl=0"></audio></td>
 										</tr>
 										<tr>
 											<td><code>STOP_TIMER_OFF</code></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/c39phjw0vogg8lm/stop-timeout-cancel.mp3?dl=0"></audio></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/9o9v826was19lyi/tslocationmanager_bell_ding_pop.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/qnsdu7b6vxic01i/stop-timeout-cancel.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropboxusercontent.com/s/9o9v826was19lyi/tslocationmanager_bell_ding_pop.mp3?dl=0"></audio></td>
 										</tr>
 										<tr>
 											<td><code>HEARTBEAT</code></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/5rdc38isc8yf323/heartbeat.mp3?dl=0"></audio></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/bsdtw21hscqqy67/tslocationmanager_peep_note1.wav?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/90vyfo3woe52ijo/heartbeat.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropboxusercontent.com/s/bsdtw21hscqqy67/tslocationmanager_peep_note1.wav?dl=0"></audio></td>
 										</tr>
 										<tr>
 											<td><code>GEOFENCE_ENTER</code></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/i4hzh4rgmd1lo20/geofence-enter.mp3?dl=0"></audio></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/76up5ik215xwxh1/tslocationmanager_beep_trip_up_dry.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/h3047lybsggats7/geofence-enter.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropboxusercontent.com/s/76up5ik215xwxh1/tslocationmanager_beep_trip_up_dry.mp3?dl=0"></audio></td>
 										</tr>
 										<tr>
 											<td><code>GEOFENCE_EXIT</code></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/nwonzl1ni15qv1k/geofence-exit.mp3?dl=0"></audio></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/xuyyagffheyk8r7/tslocationmanager_beep_trip_dry.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/2e8bg22c6g9zwxr/geofence-exit.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropboxusercontent.com/s/xuyyagffheyk8r7/tslocationmanager_beep_trip_dry.mp3?dl=0"></audio></td>
 										</tr>
 										<tr>
 											<td><code>GEOFENCE_DWELL_START</code></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/djlpw2ejaioq0g2/geofence-dwell-start.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/7nysvyjxuxm9pms/geofence-dwell-start.mp3?dl=0"></audio></td>
 											<td>n/a</td>
 										</tr>
 										<tr>
 											<td><code>GEOFENCE_DWELL_CANCEL</code></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/37xvre56gz3ro58/geofence-dwell-cancel.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/sk2hur6nxch1zvm/geofence-dwell-cancel.mp3?dl=0"></audio></td>
 											<td>n/a</td>
 										</tr>
 										<tr>
 											<td><code>GEOFENCE_DWELL</code></td>
 											<td><code>GEOFENCE_ENTER</code> after <code>GEOFENCE_DWELL_START</code></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/uw5vjuatm3wnuid/tslocationmanager_beep_trip_up_echo.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropboxusercontent.com/s/uw5vjuatm3wnuid/tslocationmanager_beep_trip_up_echo.mp3?dl=0"></audio></td>
 										</tr>
 										<tr>
 											<td><code>ERROR</code></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/13c50fnepyiknnb/error.mp3?dl=0"></audio></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/32e93c1t4kh69p1/tslocationmanager_music_timpani_error_01.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/h5b52m056pfc734/error.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropboxusercontent.com/s/32e93c1t4kh69p1/tslocationmanager_music_timpani_error_01.mp3?dl=0"></audio></td>
 										</tr>
 										<tr>
 											<td><code>WARNING</code></td>
 											<td>n/a</td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/wadrz2x6elhc65l/tslocationmanager_digi_warn.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropboxusercontent.com/s/wadrz2x6elhc65l/tslocationmanager_digi_warn.mp3?dl=0"></audio></td>
 										</tr>
 										<tr>
 											<td><code>BACKGROUND_FETCH</code></td>
-											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/am91js76s0ehjo1/background-fetch.mp3?dl=0"></audio></td>
+											<td><video controls name="media" height="50" width="200"><source src="https://dl.dropbox.com/s/mcsjqye0xx2kapk/background-fetch.mp3?dl=0"></audio></td>
 											<td>n/a</td>
 										</tr>
 								</tbody></table>
@@ -1045,6 +1081,20 @@ Locations: <span class="hljs-variable">__</span>|<span class="hljs-variable">__<
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+					<a name="disableautosynconcellular" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> disable<wbr>Auto<wbr>Sync<wbr>OnCellular</h3>
+					<div class="tsd-signature tsd-kind-icon">disable<wbr>Auto<wbr>Sync<wbr>OnCellular<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Disable <a href="_react_native_background_geolocation_.config.html#autosync">autoSync</a> HTTP requests when device is connected to a Cellular connection.
+							Defaults to <code>false</code>.  Set <code>true</code> to allow <a href="_react_native_background_geolocation_.config.html#autosync">autoSync</a> only when device is connected to Wifi.</p>
+						</div>
+						<p><strong>WARNING</strong> This option is ignored when manually invoking <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#sync">BackgroundGeolocation.sync</a>.</p>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
 					<a name="disableelasticity" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> disable<wbr>Elasticity</h3>
 					<div class="tsd-signature tsd-kind-icon">disable<wbr>Elasticity<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
@@ -1096,16 +1146,16 @@ Locations: <span class="hljs-variable">__</span>|<span class="hljs-variable">__<
 								</ul>
 							</dd>
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">BackgroundGeolocation.onProviderChange(<span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> {
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'[onProviderChange] '</span>, event);
+							<dd><pre><code class="language-typescript">BackgroundGeolocation.onProviderChange(<span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> {
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"[onProviderChange] "</span>, event);
 
   <span class="hljs-keyword">if</span> (!provider.enabled) {
-    alert(<span class="hljs-string">'Please enable location services'</span>);
+    alert(<span class="hljs-string">"Please enable location services"</span>);
   }
 });
 
 BackgroundGeolocation.ready({
-  <span class="hljs-attr">disableLocationAuthorizationAlert</span>: <span class="hljs-literal">true</span>
+  disableLocationAuthorizationAlert: <span class="hljs-literal">true</span>
 });</code></pre>
 							</dd>
 						</dl>
@@ -1119,22 +1169,27 @@ BackgroundGeolocation.ready({
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p><strong><code>[iOS only]</code></strong> Disable the plugin requesting &quot;Motion &amp; Fitness&quot; authorization from the User.</p>
+							<p>Disable the plugin requesting &quot;Motion &amp; Fitness&quot; (ios) or &quot;Physical Activity&quot; (android &gt;= 10) authorization from the User.</p>
 						</div>
 						<dl class="tsd-comment-tags">
 							<dt class="tsd-comment-tag-break">break</dt>
-							<dd><p>Defaults to <strong><code>false</code></strong>.  Set <strong><code>true</code></strong> to disable iOS <a href="https://developer.apple.com/reference/coremotion/cmmotionactivitymanager"><code>CMMotionActivityManager</code></a>-based motion-activity updates (eg: <code>walking</code>, <code>in_vehicle</code>).  This feature requires a device having the <strong>M7</strong> co-processor (ie: iPhone 5s and up).</p>
-								<h3 id="-warning-">⚠️ Warning:</h3>
-								<ul>
-									<li>The plugin is <strong>HIGHLY</strong> optimized for motion-activity-updates.  If you <strong>do</strong> disable this, the plugin <em>will</em> drain more battery power.  You are <strong>STRONGLY</strong> advised against disabling this.  You should explain to your users with an appropriate <code>NSMotionUsageDescription</code> in your <code>Info.plist</code> file, for example:<blockquote>
-											<p>&quot;Motion activity detection increases battery efficiency by intelligently toggling location-tracking&quot; off when your device is detected to be stationary.</p>
-										</blockquote>
-									</li>
-								</ul>
-								<h3 id="-note-">ℹ️ Note:</h3>
-								<ul>
-									<li>This feature will ask the user for &quot;Health updates&quot; permission using the <strong><code>NSMotionUsageDescription</code></strong> in your <code>Info.plist</code>.  If you do not wish to ask the user for the &quot;Health updates&quot;, set this option to <code>true</code>; However, you will no longer receive accurate activity data in the recorded locations.</li>
-								</ul>
+							<dd><p>Defaults to <strong><code>false</code></strong>.  Set to <strong><code>true</code></strong> to disable asking the user for this permission.</p>
+								<h2 id="ios">iOS</h2>
+								<p><img src="https://dl.dropbox.com/s/v3qt7ry1k4b3iir/ios-motion-permission.png?dl=1" alt=""></p>
+								<p>The plugin is <strong>HIGHLY</strong> optimized for motion-activity-updates.  If you <strong>do</strong> disable this, the plugin <em>will</em> drain more battery power.  You are <strong>STRONGLY</strong> advised against disabling this.  You should explain to your users with an appropriate <code>NSMotionUsageDescription</code> in your <code>Info.plist</code> file, for example:</p>
+								<blockquote>
+									<p>&quot;Motion activity detection increases battery efficiency by intelligently toggling location-tracking&quot; off when your device is detected to be stationary.</p>
+								</blockquote>
+								<h2 id="android">Android</h2>
+								<p>Android 10+ now requires run-time permission from the user for &quot;Physical Activity&quot;.
+								<img src="https://dl.dropbox.com/s/6v4391oz592bdjg/android-permission-physical-activity.png?dl=1" alt=""></p>
+								<p>Traditionally, the <code>background-geolocation</code> Android SDK has relied heavily upon the Motion API for determining when to toggle location-services on/off based upon whether the device is <em>moving</em> vs <em>stationary</em>.
+								However, the Android SDK has a fallback &quot;stationary geofence&quot; mechanism just like iOS, the exit of which will cause the plugin to change to the <em>moving</em> state, toggle location-services and begin tracking.  This will, of course, require the device moves a distance of typically <strong>200-500 meters</strong> before tracking engages.  With the Motion API authorized, the Android SDK typically requires just <strong>a few meters</strong> of movement for tracking to engage.</p>
+							</dd>
+							<dt class="tsd-comment-tag-example">example</dt>
+							<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
+  disableMotionActivityUpdates: <span class="hljs-literal">true</span>
+});</code></pre>
 							</dd>
 						</dl>
 					</div>
@@ -1157,9 +1212,9 @@ BackgroundGeolocation.ready({
 								<p>To <em>completely</em> disable automatically turning off iOS location-services, you must also provide <a href="_react_native_background_geolocation_.config.html#pauseslocationupdatesautomatically">pausesLocationUpdatesAutomatically</a> <strong><code>false</code></strong>.</p>
 							</dd>
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">BackgroundGeolocation.ready({
-  <span class="hljs-attr">disableStopDetection</span>: <span class="hljs-literal">true</span>,
-  <span class="hljs-attr">pausesLocationUpdatesAutomatically</span>: <span class="hljs-literal">false</span>
+							<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
+  disableStopDetection: <span class="hljs-literal">true</span>,
+  pausesLocationUpdatesAutomatically: <span class="hljs-literal">false</span>
 });</code></pre>
 								<h3 id="-ios-location-services-will-never-turn-off-">⚠️ iOS location-services will <strong>never</strong> turn off!</h3>
 								<p>With the above configuration, iOS location-services will never turn off and you could <strong>quickly discharge the battery</strong>.  Do <strong>not</strong> do
@@ -1286,9 +1341,124 @@ BackgroundGeolocation.ready({
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+					<a name="encrypt" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> encrypt</h3>
+					<div class="tsd-signature tsd-kind-icon">encrypt<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Encrypt location data in the SDK&#39;s SQLite datbase and HTTP requests (<strong><code>AES-256-CBC</code></strong>).</p>
+						</div>
+						<p>Defaults to <code>false</code>.  When enabled, the SDK will encrypt location data in its SQLite database.  When executing HTTP requests, the SDK will encrypt the entire request payload and encode the result as <code>Base64</code>.</p>
+						<pre><code class="language-typescript">BackgroundGeolocation.ready({
+  encrypt: <span class="hljs-literal">true</span>
+});</code></pre>
+						<h2 id="encryption-password">Encryption Password</h2>
+						<p>The SDK&#39;s encryption stack requires a configurable encryption <em>password</em>.</p>
+						<h2 id="ios">iOS</h2>
+						<ul>
+							<li><h3 id="react-native">React Native</h3>
+							In your <strong><code>Info.plist</code></strong>, Add the <code>String</code> key <code>BACKGROUND_GEOLOCATION_ENCRYPTION_PASSWORD</code>.</li>
+						</ul>
+						<p><img src="https://www.dropbox.com/s/amea0siu9mxroh3/ios-encryption_password.png?dl=1" alt=""></p>
+						<ul>
+							<li><h3 id="cordova">Cordova</h3>
+							</li>
+						</ul>
+						<p>📂 <strong><code>config.xml</code></strong></p>
+						<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">platform</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"ios"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">config-file</span> <span class="hljs-attr">parent</span>=<span class="hljs-string">"BACKGROUND_GEOLOCATION_ENCRYPTION_PASSWORD"</span> <span class="hljs-attr">target</span>=<span class="hljs-string">"*-Info.plist"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>"your secret encryption password<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">config-file</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">platform</span>&gt;</span></code></pre>
+						<h2 id="android">Android</h2>
+						<ul>
+							<li><h3 id="react-native">React Native</h3>
+							</li>
+						</ul>
+						<p>In your <strong><code>AndroidManifest.xml</code></strong>, add the following <code>&lt;meta-data&gt;</code> element:</p>
+						<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">application</span>&gt;</span>
+    .
+    .
+    .
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta-data</span>
+<span class="hljs-attr">android:name</span>=<span class="hljs-string">"com.transistorsoft.locationmanager.ENCRYPTION_PASSWORD"</span> <span class="hljs-attr">android:value</span>=<span class="hljs-string">"your secret encryption password"</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">application</span>&gt;</span></code></pre>
+						<ul>
+							<li><h3 id="cordova">Cordova</h3>
+							</li>
+						</ul>
+						<p>📂 <strong><code>config.xml</code></strong></p>
+						<pre><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">platform</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"android"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">config-file</span> <span class="hljs-attr">parent</span>=<span class="hljs-string">"/manifest/application"</span> <span class="hljs-attr">target</span>=<span class="hljs-string">"app/src/main/AndroidManifest.xml"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">meta-data</span> <span class="hljs-attr">android:name</span>=<span class="hljs-string">"com.transistorsoft.locationmanager.ENCRYPTION_PASSWORD"</span> <span class="hljs-attr">android:value</span>=<span class="hljs-string">"your secret encryption password"</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">config-file</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">platform</span>&gt;</span></code></pre>
+						<h2 id="rncryptor-encryption-stack">RNCryptor Encryption Stack</h2>
+						<p>The SDK uses the <a href="https://github.com/RNCryptor/RNCryptor-Spec/blob/master/RNCryptor-Spec-v3.md">RNCryptor Encryption Stack</a>.  See <a href="https://github.com/RNCryptor">RNCypto</a> for a list of available language implementations.</p>
+						<p>After decoding the <code>Base64</code>-encoded data from the HTTP request body, you&#39;ll have a binary payload.  Extract bytes as follows:</p>
+						<p><img src="https://dl.dropbox.com/s/owp61pt3cqfij16/RNCrypto-DataFormat-Spec.png?dl=1" alt=""></p>
+						<table>
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Description</th>
+								</tr>
+							</thead>
+							<tbody><tr>
+									<td><code>version</code></td>
+									<td>(1 byte): Data format version. (Currently <code>3</code>).</td>
+								</tr>
+								<tr>
+									<td><code>options</code></td>
+									<td>(1 byte): bit 0 - uses password (Always <code>1</code>).</td>
+								</tr>
+								<tr>
+									<td><code>encryptionSalt</code></td>
+									<td>(8 bytes)</td>
+								</tr>
+								<tr>
+									<td><code>HMACSalt</code></td>
+									<td>(8 bytes)</td>
+								</tr>
+								<tr>
+									<td><code>IV</code></td>
+									<td>(16 bytes)</td>
+								</tr>
+								<tr>
+									<td><code>ciphertext</code></td>
+									<td>(variable) -- Encrypted in CBC mode</td>
+								</tr>
+								<tr>
+									<td><code>HMAC</code></td>
+									<td>(32 bytes)</td>
+								</tr>
+						</tbody></table>
+						<p>See <a href="https://gist.github.com/christocracy/f814dd35cfd9eced5d4de3025c38333c">here</a> for a NodeJS-based decryption example.</p>
+						<h3 id="password-based-decryption-abstract-language-">Password-based decryption (abstract language)</h3>
+						<pre><code><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">Decrypt</span><span class="hljs-params">(Password, Message)</span></span> =
+  (Version,Options,EncryptionSalt,HMACSalt,IV,Ciphertext,HMAC) = Split(Message)
+    EncryptionKey = PKBDF2(EncryptionSalt, <span class="hljs-number">32</span> length, <span class="hljs-number">10</span>k iterations, Password)
+    HMACKey = PKBDF2(HMACSalt, <span class="hljs-number">32</span> length, <span class="hljs-number">10</span>k iterations, password)
+    Header = <span class="hljs-number">3</span> <span class="hljs-params">||</span> <span class="hljs-number">1</span> <span class="hljs-params">||</span> EncryptionSalt <span class="hljs-params">||</span> HMACSalt <span class="hljs-params">||</span> IV
+    Plaintext = AES256Decrypt(Ciphertext, ModeCBC, IV, EncryptionKey)
+    ComputedHMAC = HMAC(Header <span class="hljs-params">||</span> Ciphertext, HMACKey, SHA-<span class="hljs-number">256</span>)
+    <span class="hljs-keyword">if</span> ConsistentTimeEqual(ComputedHMAC, HMAC) <span class="hljs-keyword">return</span> Plaintext <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> Error</code></pre><ol>
+							<li>Pull apart the pieces as described in the data format.</li>
+							<li>Generate the encryption key using PBKDF2 (see your language docs for how to call this). Pass the password as a string, the random encryption salt, 10,000 iterations, and SHA-1 PRF. Request a length of 32 bytes.</li>
+							<li>Generate the HMAC key using PBKDF2 (see your language docs for how to call this). Pass the password as a string, the random HMAC salt, 10,000 iterations, and SHA-1 PRF. Request a length of 32 bytes.</li>
+							<li>Decrypt the data using the encryption key (above), the given IV, AES-256, and the CBC mode. This is the default mode for almost all AES encryption libraries.</li>
+							<li>Pass your header and ciphertext to an HMAC function, along with the HMAC key (above), and the PRF &quot;SHA-256&quot; (see your library&#39;s docs for what the names of the PRF functions are; this might also be called &quot;SHA-2, 256-bits&quot;).</li>
+							<li>Compare the computed HMAC with the expected HMAC using a constant time equality function (see below). If they are equal, return the plaintext. Otherwise, return an error</li>
+						</ol>
+						<p>Note: The RNCryptor format v3 uses SHA-1 for PBKDF2, but SHA-256 for HMAC.</p>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
 					<a name="extras" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> extras</h3>
-					<div class="tsd-signature tsd-kind-icon">extras<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Object</span></div>
+					<div class="tsd-signature tsd-kind-icon">extras<span class="tsd-signature-symbol">:</span> <a href="../modules/_react_native_background_geolocation_.html#extras" class="tsd-signature-type">Extras</a></div>
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1298,19 +1468,19 @@ BackgroundGeolocation.ready({
 						<p>📘 See HTTP Guide: <a href="_react_native_background_geolocation_.httpevent.html">HttpEvent</a></p>
 						<dl class="tsd-comment-tags">
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">BackgroundGeolocation.ready({
-  <span class="hljs-attr">url</span>: <span class="hljs-string">'https://my-server.com/locations'</span>,
-  <span class="hljs-attr">extras</span>: {
-    <span class="hljs-string">'route_id'</span>: <span class="hljs-number">1234</span>
+							<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
+  url: <span class="hljs-string">"https://my-server.com/locations"</span>,
+  extras: {
+    <span class="hljs-string">"route_id"</span>: <span class="hljs-number">1234</span>
   },
-  <span class="hljs-attr">params</span>: {
-    <span class="hljs-string">'device_id'</span>: <span class="hljs-string">'abc123'</span>
+  params: {
+    <span class="hljs-string">"device_id"</span>: <span class="hljs-string">"abc123"</span>
   }
 });</code></pre>
 								<p>Observing incoming requests at your server:</p>
 							</dd>
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">- POST /locations
+							<dd><pre><code class="language-typescript">- POST /locations
 {
   <span class="hljs-string">"device_id"</span>: <span class="hljs-string">"abc123"</span> <span class="hljs-comment">// &lt;-- params appended to root of JSON</span>
   <span class="hljs-string">"location"</span>: {
@@ -1363,10 +1533,11 @@ BackgroundGeolocation.ready({
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Force launch your terminated App after a device reboot or application update.</p>
-						</div>
 						<dl class="tsd-comment-tags">
+							<dt class="tsd-comment-tag-deprecated">deprecated</dt>
+							<dd><p><strong>Banned in Android 10.  Use <a href="_react_native_background_geolocation_.config.html#enableheadless">Config.enableHeadless</a> instead.</strong></p>
+								<p>Force launch your terminated App after a device reboot or application update.</p>
+							</dd>
 							<dt class="tsd-comment-tag-break">break</dt>
 							<dd><p>When the user reboots their device with <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html">BackgroundGeolocation</a> configured with <a href="_react_native_background_geolocation_.config.html#startonboot">startOnBoot</a> <strong><code>true</code></strong>, only the plugin&#39;s pure native background-service begins running, <strong>&quot;headless&quot;</strong>, in this case.  The background service will continue tracking the location.  However, the background service <em>can</em> optionally <strong>re-launch</strong> your foreground application.</p>
 								<h3 id="-warning-">⚠️ Warning:</h3>
@@ -1384,10 +1555,11 @@ BackgroundGeolocation.ready({
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Force launch your terminated App after a <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#ongeofence">BackgroundGeolocation.onGeofence</a> event.</p>
-						</div>
 						<dl class="tsd-comment-tags">
+							<dt class="tsd-comment-tag-deprecated">deprecated</dt>
+							<dd><p><strong>Banned in Android 10.  Use <a href="_react_native_background_geolocation_.config.html#enableheadless">Config.enableHeadless</a> instead.</strong></p>
+								<p>Force launch your terminated App after a <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#ongeofence">BackgroundGeolocation.onGeofence</a> event.</p>
+							</dd>
 							<dt class="tsd-comment-tag-break">break</dt>
 							<dd><p>When the user terminates your Android app with <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html">BackgroundGeolocation</a> configured with <a href="_react_native_background_geolocation_.config.html#stoponterminate">stopOnTerminate</a> <strong><code>false</code></strong>, the foreground <code>MainActivity</code> (where your Javascript app lives) <em>will</em> terminate &mdash; only the plugin&#39;s pure native background-service is running, <strong>&quot;headless&quot;</strong>, in this case.  The background service will continue tracking the location.  However, the background service <em>can</em> optionally <strong>re-launch</strong> your foreground application.</p>
 								<h3 id="-warning-">⚠️ Warning:</h3>
@@ -1405,10 +1577,11 @@ BackgroundGeolocation.ready({
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Force launch your terminated App after a <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#onheartbeat">BackgroundGeolocation.onHeartbeat</a> event.</p>
-						</div>
 						<dl class="tsd-comment-tags">
+							<dt class="tsd-comment-tag-deprecated">deprecated</dt>
+							<dd><p><strong>Banned in Android 10.  Use <a href="_react_native_background_geolocation_.config.html#enableheadless">Config.enableHeadless</a> instead.</strong></p>
+								<p>Force launch your terminated App after a <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#onheartbeat">BackgroundGeolocation.onHeartbeat</a> event.</p>
+							</dd>
 							<dt class="tsd-comment-tag-break">break</dt>
 							<dd><p>When the user terminates your Android app with <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html">BackgroundGeolocation</a> configured with <a href="_react_native_background_geolocation_.config.html#stoponterminate">stopOnTerminate</a> <strong><code>false</code></strong>, the foreground <code>MainActivity</code> (where your application code lives) <em>will</em> terminate &mdash; only the plugin&#39;s pure native background-service is running, <strong>&quot;headless&quot;</strong>, in this case.  The background service will continue tracking the location.  However, the background service <em>can</em> optionally <strong>re-launch</strong> your foreground application.</p>
 								<h3 id="-warning-">⚠️ Warning:</h3>
@@ -1426,10 +1599,11 @@ BackgroundGeolocation.ready({
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Force launch your terminated App after a <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#onlocation">BackgroundGeolocation.onLocation</a> event.</p>
-						</div>
 						<dl class="tsd-comment-tags">
+							<dt class="tsd-comment-tag-deprecated">deprecated</dt>
+							<dd><p><strong>Banned in Android 10.  Use <a href="_react_native_background_geolocation_.config.html#enableheadless">Config.enableHeadless</a> instead.</strong></p>
+								<p>Force launch your terminated App after a <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#onlocation">BackgroundGeolocation.onLocation</a> event.</p>
+							</dd>
 							<dt class="tsd-comment-tag-break">break</dt>
 							<dd><p>When the user terminates your Android app with <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html">BackgroundGeolocation</a> configured with <a href="_react_native_background_geolocation_.config.html#stoponterminate">stopOnTerminate</a> <strong><code>false</code></strong>, the foreground <code>MainActivity</code> (where your Javascript app lives) <em>will</em> terminate &mdash; only the plugin&#39;s pure native background-service is running, <strong>&quot;headless&quot;</strong>, in this case.  The background service will continue tracking the location.  However, the background service <em>can</em> optionally <strong>re-launch</strong> your foreground application.</p>
 								<h3 id="-warning-">⚠️ Warning:</h3>
@@ -1447,10 +1621,11 @@ BackgroundGeolocation.ready({
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Force launch your terminated App after a <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#onmotionchange">BackgroundGeolocation.onMotionChange</a> event.</p>
-						</div>
 						<dl class="tsd-comment-tags">
+							<dt class="tsd-comment-tag-deprecated">deprecated</dt>
+							<dd><p><strong>Banned in Android 10.  Use <a href="_react_native_background_geolocation_.config.html#enableheadless">Config.enableHeadless</a> instead.</strong></p>
+								<p>Force launch your terminated App after a <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#onmotionchange">BackgroundGeolocation.onMotionChange</a> event.</p>
+							</dd>
 							<dt class="tsd-comment-tag-break">break</dt>
 							<dd><p>When the user terminates your Android app with <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html">BackgroundGeolocation</a> configured with <a href="_react_native_background_geolocation_.config.html#stoponterminate">stopOnTerminate</a> <strong><code>false</code></strong>, the foreground <code>MainActivity</code> (where your Javascript app lives) <em>will</em> terminate &mdash; only the plugin&#39;s pure native background-service is running, <strong>&quot;headless&quot;</strong>, in this case.  The background service will continue tracking the location.  However, the background service <em>can</em> optionally <strong>re-launch</strong> your foreground application.</p>
 								<h3 id="-warning-">⚠️ Warning:</h3>
@@ -1468,10 +1643,11 @@ BackgroundGeolocation.ready({
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Force launch your terminated App after a <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#onschedule">BackgroundGeolocation.onSchedule</a> event.</p>
-						</div>
 						<dl class="tsd-comment-tags">
+							<dt class="tsd-comment-tag-deprecated">deprecated</dt>
+							<dd><p><strong>Banned in Android 10.  Use <a href="_react_native_background_geolocation_.config.html#enableheadless">Config.enableHeadless</a> instead.</strong></p>
+								<p>Force launch your terminated App after a <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#onschedule">BackgroundGeolocation.onSchedule</a> event.</p>
+							</dd>
 							<dt class="tsd-comment-tag-break">break</dt>
 							<dd><p>When the user terminates your Android app with <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html">BackgroundGeolocation</a> configured with <a href="_react_native_background_geolocation_.config.html#stoponterminate">stopOnTerminate</a> <strong><code>false</code></strong>, the foreground <code>MainActivity</code> (where your Javascript app lives) <em>will</em> terminate &mdash; only the plugin&#39;s pure native background-service is running, <strong>&quot;headless&quot;</strong>, in this case.  The background service will continue tracking the location.  However, the background service <em>can</em> optionally <strong>re-launch</strong> your foreground application.</p>
 								<h3 id="-warning-">⚠️ Warning:</h3>
@@ -1623,8 +1799,8 @@ BackgroundGeolocation.ready({
 								</ul>
 							</dd>
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">BackgroundGeolocation.ready({
-  <span class="hljs-attr">geofenceTemplate</span>: <span class="hljs-string">'{ "lat":&lt;%= latitude %&gt;, "lng":&lt;%= longitude %&gt;, "geofence":"&lt;%= geofence.identifier %&gt;:&lt;%= geofence.action %&gt;" }'</span>
+							<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
+  geofenceTemplate: <span class="hljs-string">'{ "lat":&lt;%= latitude %&gt;, "lng":&lt;%= longitude %&gt;, "geofence":"&lt;%= geofence.identifier %&gt;:&lt;%= geofence.action %&gt;" }'</span>
 });
 
 <span class="hljs-comment">// Or use a compact [Array] template!</span>
@@ -1637,8 +1813,8 @@ BackgroundGeolocation.{(
 								<p>The following will generate an error:</p>
 							</dd>
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">BackgroundGeolocation.ready({
-  <span class="hljs-attr">locationTemplate</span>: <span class="hljs-string">'{"timestamp": &lt;%= timestamp %&gt;}'</span>
+							<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
+  locationTemplate: <span class="hljs-string">'{"timestamp": &lt;%= timestamp %&gt;}'</span>
 });</code></pre>
 								<p>Since the template-tag <code>timestamp</code> renders a string, the rendered String will look like this, generating a JSON error:</p>
 							</dd>
@@ -1647,8 +1823,8 @@ BackgroundGeolocation.{(
 								<p>The correct <code>geofenceTemplate</code> is:</p>
 							</dd>
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">BackgroundGeolocation.ready({
-  <span class="hljs-attr">geofenceTemplate</span>: <span class="hljs-string">'{"timestamp": "&lt;%= timestamp %&gt;"}'</span>
+							<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
+  geofenceTemplate: <span class="hljs-string">'{"timestamp": "&lt;%= timestamp %&gt;"}'</span>
 });</code></pre>
 							</dd>
 							<dt class="tsd-comment-tag-example">example</dt>
@@ -1748,6 +1924,16 @@ BackgroundGeolocation.{(
 											<td><code>Boolean</code></td>
 											<td>Is device plugged in?</td>
 										</tr>
+										<tr>
+											<td><code>mock</code></td>
+											<td><code>Boolean</code></td>
+											<td><code>true</code> when geofence was recorded from a Mock location app.</td>
+										</tr>
+										<tr>
+											<td><code>is_moving</code></td>
+											<td><code>Boolean</code></td>
+											<td><code>true</code> if geofence was recorded while device was in <em>moving</em> state.</td>
+										</tr>
 								</tbody></table>
 							</dd>
 						</dl>
@@ -1765,11 +1951,11 @@ BackgroundGeolocation.{(
 						</div>
 						<dl class="tsd-comment-tags">
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">BackgroundGeolocation.ready({
-  <span class="hljs-attr">url</span>: <span class="hljs-string">'https://my.server.com'</span>,
-  <span class="hljs-attr">headers</span>: {
-    <span class="hljs-string">'authorization'</span>: <span class="hljs-string">"Bearer &lt;a secret key&gt;"</span>,
-    <span class="hljs-string">'X-FOO": "BAR'</span>
+							<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
+  url: <span class="hljs-string">"https://my.server.com"</span>,
+  headers: {
+    <span class="hljs-string">"authorization"</span>: <span class="hljs-string">"Bearer &lt;a secret key&gt;"</span>,
+    <span class="hljs-string">"X-FOO"</span>: <span class="hljs-string">"BAR"</span>
   }
 });</code></pre>
 								<p>Observing incoming requests at your server:</p>
@@ -1810,19 +1996,19 @@ BackgroundGeolocation.{(
 								</ul>
 							</dd>
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">BackgroundGeolocation.ready({
-  <span class="hljs-attr">heartbeatInterval</span>: <span class="hljs-number">60</span>
+							<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
+  heartbeatInterval: <span class="hljs-number">60</span>
 });
 
 BackgroundGeolocation.onHeartbeat(<span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> {
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'[onHeartbeat] '</span>, event);
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"[onHeartbeat] "</span>, event);
 
   <span class="hljs-comment">// You could request a new location if you wish.</span>
   BackgroundGeolocation.getCurrentPosition({
-    <span class="hljs-attr">samples</span>: <span class="hljs-number">1</span>,
-    <span class="hljs-attr">persist</span>: <span class="hljs-literal">true</span>
+    samples: <span class="hljs-number">1</span>,
+    persist: <span class="hljs-literal">true</span>
   }).then(<span class="hljs-function">(<span class="hljs-params">location</span>) =&gt;</span> {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'[getCurrentPosition] '</span>, location);
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"[getCurrentPosition] "</span>, location);
   });
 });</code></pre>
 								<h3 id="-see-also-">ℹ️ See also:</h3>
@@ -1845,9 +2031,9 @@ BackgroundGeolocation.onHeartbeat(<span class="hljs-function">(<span class="hljs
 						</div>
 						<dl class="tsd-comment-tags">
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">BackgroundGeolocation.ready({
-  <span class="hljs-attr">httpRootProperty</span>: <span class="hljs-string">"myData"</span>,
-  <span class="hljs-attr">url</span>: <span class="hljs-string">"https://my.server.com"</span>
+							<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
+  httpRootProperty: <span class="hljs-string">"myData"</span>,
+  url: <span class="hljs-string">"https://my.server.com"</span>
 });
 </code></pre>
 								<pre><code class="language-json">{
@@ -1890,16 +2076,16 @@ BackgroundGeolocation.onHeartbeat(<span class="hljs-function">(<span class="hljs
 						<p>HTTP request timeouts will fire the <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#onhttp">BackgroundGeolocation.onHttp</a>.  Defaults to <code>60000 ms</code>.</p>
 						<dl class="tsd-comment-tags">
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">BackgroundGeolocation.onHttp(<span class="hljs-function">(<span class="hljs-params">response</span>) =&gt;</span> {
+							<dd><pre><code class="language-typescript">BackgroundGeolocation.onHttp(<span class="hljs-function">(<span class="hljs-params">response</span>) =&gt;</span> {
   <span class="hljs-keyword">let</span> success = response.success;
   <span class="hljs-keyword">if</span> (!success) {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'[onHttp] FAILURE: '</span>, response);
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"[onHttp] FAILURE: "</span>, response);
   }
 });
 
 BackgroundGeolocation.ready({
-  <span class="hljs-attr">url</span>: <span class="hljs-string">'https://my-server.com/locations'</span>,
-  <span class="hljs-attr">httpTimeout</span>: <span class="hljs-number">3000</span>
+  url: <span class="hljs-string">"https://my-server.com/locations"</span>,
+  httpTimeout: <span class="hljs-number">3000</span>
 );</code></pre>
 								<h3 id="-see-also-">ℹ️ See also:</h3>
 								<ul>
@@ -1952,13 +2138,13 @@ BackgroundGeolocation.ready({
 								<p><img src="https://dl.dropboxusercontent.com/s/wyoaf16buwsw7ed/docs-locationAuthorizationAlert.jpg?dl=1" alt=""></p>
 							</dd>
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">BackgroundGeolocation.ready({
-  <span class="hljs-attr">locationAuthorizationAlert</span>: {
-    <span class="hljs-attr">titleWhenNotEnabled</span>: <span class="hljs-string">'Yo, location-services not enabled'</span>,
-    <span class="hljs-attr">titleWhenOff</span>: <span class="hljs-string">'Yo, location-services OFF'</span>,
-    <span class="hljs-attr">instructions</span>: <span class="hljs-string">'You must enable "Always" in location-services, buddy'</span>,
-    <span class="hljs-attr">cancelButton</span>: <span class="hljs-string">'Cancel'</span>,
-    <span class="hljs-attr">settingsButton</span>: <span class="hljs-string">'Settings'</span>
+							<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
+  locationAuthorizationAlert: {
+    titleWhenNotEnabled: <span class="hljs-string">"Yo, location-services not enabled"</span>,
+    titleWhenOff: <span class="hljs-string">"Yo, location-services OFF"</span>,
+    instructions: <span class="hljs-string">"You must enable 'Always' in location-services, buddy"</span>,
+    cancelButton: <span class="hljs-string">"Cancel"</span>,
+    settingsButton: <span class="hljs-string">"Settings"</span>
   }
 })</code></pre>
 								<h3 id="-warning-">⚠️ Warning:</h3>
@@ -2009,13 +2195,13 @@ BackgroundGeolocation.ready({
 								<pre><code class="language-bash">&lt;%= variable_name %&gt;</code></pre>
 							</dd>
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">BackgroundGeolocation.ready({
-  <span class="hljs-attr">locationTemplate</span>: <span class="hljs-string">'{"lat":&lt;%= latitude %&gt;,"lng":&lt;%= longitude %&gt;,"event":"&lt;%= event %&gt;",isMoving:&lt;%= is_moving %&gt;}'</span>
+							<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
+  locationTemplate: <span class="hljs-string">'{"lat":&lt;%= latitude %&gt;,"lng":&lt;%= longitude %&gt;,"event":"&lt;%= event %&gt;",isMoving:&lt;%= is_moving %&gt;}'</span>
 });
 
 <span class="hljs-comment">// Or use a compact [Array] template!</span>
 BackgroundGeolocation.ready({
-  <span class="hljs-attr">locationTemplate</span>: <span class="hljs-string">'[&lt;%=latitude%&gt;, &lt;%=longitude%&gt;, "&lt;%=event%&gt;", &lt;%=is_moving%&gt;]'</span>
+  locationTemplate: <span class="hljs-string">'[&lt;%=latitude%&gt;, &lt;%=longitude%&gt;, "&lt;%=event%&gt;", &lt;%=is_moving%&gt;]'</span>
 ))</code></pre>
 								<h3 id="-quoting-string-data-">⚠️  quoting <code>String</code> data.</h3>
 								<p>The plugin does not automatically apply double-quotes around <code>String</code> data.  The plugin will attempt to JSON encode your template exactly
@@ -2023,8 +2209,8 @@ BackgroundGeolocation.ready({
 								<p>The following will generate an error:</p>
 							</dd>
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">BackgroundGeolocation.ready({
-  <span class="hljs-attr">locationTemplate</span>: <span class="hljs-string">'{"timestamp": &lt;%= timestamp %&gt;}'</span>
+							<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
+  locationTemplate: <span class="hljs-string">'{"timestamp": &lt;%= timestamp %&gt;}'</span>
 });</code></pre>
 								<p>Since the template-tag <code>timestamp</code> renders a string, the rendered String will look like this, generating a JSON error:</p>
 							</dd>
@@ -2033,8 +2219,8 @@ BackgroundGeolocation.ready({
 								<p>The correct <code>locationTemplate</code> is:</p>
 							</dd>
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">BackgroundGeolocation.ready({
-  <span class="hljs-attr">locationTemplate</span>: <span class="hljs-string">'{"timestamp": "&lt;%= timestamp %&gt;"}'</span>
+							<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
+  locationTemplate: <span class="hljs-string">'{"timestamp": "&lt;%= timestamp %&gt;"}'</span>
 });</code></pre>
 							</dd>
 							<dt class="tsd-comment-tag-example">example</dt>
@@ -2043,10 +2229,10 @@ BackgroundGeolocation.ready({
 								<p>If you&#39;ve configured <a href="_react_native_background_geolocation_.config.html#extras">extras</a>, these key-value pairs will be merged <em>directly</em> onto your location data.  For example:</p>
 							</dd>
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">BackgroundGeolocation.ready({
-  <span class="hljs-attr">httpRootProperty</span>: <span class="hljs-string">'data'</span>,
-  <span class="hljs-attr">locationTemplate</span>: <span class="hljs-string">'{"lat":&lt;%= latitude %&gt;,"lng":&lt;%= longitude %&gt;}'</span>,
-  <span class="hljs-attr">extras</span>: {
+							<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
+  httpRootProperty: <span class="hljs-string">'data'</span>,
+  locationTemplate: <span class="hljs-string">'{"lat":&lt;%= latitude %&gt;,"lng":&lt;%= longitude %&gt;}'</span>,
+  extras: {
     <span class="hljs-string">"foo"</span>: <span class="hljs-string">"bar"</span>
   }
 )</code></pre>
@@ -2144,6 +2330,16 @@ BackgroundGeolocation.ready({
 											<td><code>Boolean</code></td>
 											<td>Is device plugged in?</td>
 										</tr>
+										<tr>
+											<td><code>mock</code></td>
+											<td><code>Boolean</code></td>
+											<td><code>true</code> when location was recorded from a Mock location app.</td>
+										</tr>
+										<tr>
+											<td><code>is_moving</code></td>
+											<td><code>Boolean</code></td>
+											<td><code>true</code> if location was recorded while device was in <em>moving</em> state.</td>
+										</tr>
 								</tbody></table>
 								<h3 id="-see-also-">ℹ️ See also:</h3>
 								<ul>
@@ -2190,8 +2386,8 @@ BackgroundGeolocation.ready({
 								<p>Applications with only the coarse location permission may have their interval silently throttled.\</p>
 							</dd>
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">BackgroundGeolocation.ready({
-  <span class="hljs-attr">distanceFilter</span>: <span class="hljs-number">0</span>,            <span class="hljs-comment">// Must be 0 or locationUpdateInterval is ignored!</span>
+							<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
+  distanceFilter: <span class="hljs-number">0</span>,            <span class="hljs-comment">// Must be 0 or locationUpdateInterval is ignored!</span>
   locationUpdateInterval: <span class="hljs-number">5000</span>  <span class="hljs-comment">// Get a location every 5 seconds</span>
 });</code></pre>
 								<h3 id="-see-also-">ℹ️ See also:</h3>
@@ -2305,15 +2501,15 @@ BackgroundGeolocation.ready({
 09-19 11:12:22.100   ✅  DESTROY: bca5acc8-e358-4d8f-827f-b8c0d556b7bb
 09-19 11:12:55.226 [c.t.l.BackgroundGeolocationService onActivityRecognitionResult] still (100%)</code></pre></dd>
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">BackgroundGeolocation.ready({
-  <span class="hljs-attr">logLevel</span>: BackgroundGeolocation.LOG_LEVEL_VERBOSE
+							<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
+  logLevel: BackgroundGeolocation.LOG_LEVEL_VERBOSE
 });</code></pre>
 								<h3 id="-see-also-">ℹ️ See also:</h3>
 								<ul>
 									<li><a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#getlog">BackgroundGeolocation.getLog</a></li>
 									<li><a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#emaillog">BackgroundGeolocation.emailLog</a></li>
 									<li><a href="_react_native_background_geolocation_.config.html#logmaxdays">logMaxDays</a></li>
-									<li><a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#destroylog">destroyLog</a></li>
+									<li><a href="_react_native_background_geolocation_.logger.html#destroylog">destroyLog</a></li>
 								</ul>
 								<h3 id="-warning-">⚠️ Warning:</h3>
 								<ul>
@@ -2418,9 +2614,9 @@ BackgroundGeolocation.ready({
 						<p>Defaults to <code>POST</code>.  Valid values are <code>POST</code>, <code>PUT</code> and <code>OPTIONS</code>.</p>
 						<dl class="tsd-comment-tags">
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">BackgroundGeolocation.ready({
-  <span class="hljs-attr">url</span>: <span class="hljs-string">'http://my-server.com/locations'</span>,
-  <span class="hljs-attr">method</span>: <span class="hljs-string">'PUT'</span>
+							<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
+  url: <span class="hljs-string">"http://my-server.com/locations"</span>,
+  method: <span class="hljs-string">"PUT"</span>
 });</code></pre>
 								<h3 id="-see-also-">ℹ️ See also:</h3>
 								<ul>
@@ -2445,6 +2641,51 @@ BackgroundGeolocation.ready({
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+					<a name="motiontriggerdelay" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> motion<wbr>Trigger<wbr>Delay</h3>
+					<div class="tsd-signature tsd-kind-icon">motion<wbr>Trigger<wbr>Delay<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p><strong><code>[Android only]</code></strong>  Optionally add a delay in milliseconds to trigger Android into the <em>moving</em> state when Motion API reports the device is moving (eg: <code>on_foot</code>, <code>in_vehicle</code>)</p>
+						</div>
+						<p>This can help prevent false-positive motion-triggering when one moves about their home, for example.  Only if the Motion API stays in the <em>moving</em> state for <code>motionTriggerDelay</code> milliseconds will the plugin trigger into the <em>moving</em> state and begin tracking the location.
+						If the Motion API returns to the <code>still</code> state before <code>motionTriggerDelay</code> times-out, the trigger to the <em>moving</em> state will be cancelled.</p>
+						<dl class="tsd-comment-tags">
+							<dt class="tsd-comment-tag-example">example</dt>
+							<dd><pre><code class="language-typescript"><span class="hljs-comment">// Delay Android motion-triggering by 30000ms</span>
+BackgroundGeolocation.ready({
+  motionTriggerDelay: <span class="hljs-number">30000</span>
+})</code></pre>
+							</dd>
+							<dt class="tsd-comment-tag-break">break</dt>
+							<dd><p>The following <code>logcat</code> shows an Android device detecting motion <strong><code>on_foot</code></strong> but returning to <strong><code>still</code></strong> before <strong><code>motionTriggerDelay</code></strong> expires, cancelling the transition to the <em>moving</em> state (see <code>⏰ Cancel OneShot: MOTION_TRIGGER_DELAY</code>):</p>
+							</dd>
+							<dt class="tsd-comment-tag-logcat">logcat</dt>
+							<dd><pre><code class="language-bash"> 04-08 10:58:03.419 TSLocationManager: ╔═════════════════════════════════════════════
+ 04-08 10:58:03.419 TSLocationManager: ║ Motion Transition Result
+ 04-08 10:58:03.419 TSLocationManager: ╠═════════════════════════════════════════════
+ 04-08 10:58:03.419 TSLocationManager: ╟─ 🔴  EXIT: still
+ 04-08 10:58:03.419 TSLocationManager: ╟─ 🎾  ENTER: on_foot
+ 04-08 10:58:03.419 TSLocationManager: ╚═════════════════════════════════════════════
+ 04-08 10:58:03.416 TSLocationManager:   ⏰ Scheduled OneShot: MOTION_TRIGGER_DELAY <span class="hljs-keyword">in</span> 30000ms
+ .
+ . &lt;motionTriggerDelay timer started&gt;
+ .
+ 04-08 10:58:19.385 TSLocationManager: ╔═════════════════════════════════════════════
+ 04-08 10:58:19.385 TSLocationManager: ║ Motion Transition Result
+ 04-08 10:58:19.385 TSLocationManager: ╠═════════════════════════════════════════════
+ 04-08 10:58:19.385 TSLocationManager: ╟─ 🔴  EXIT: on_foot
+ 04-08 10:58:19.385 TSLocationManager: ╟─ 🎾  ENTER: still
+ 04-08 10:58:19.385 TSLocationManager: ╚═════════════════════════════════════════════
+ 04-08 10:58:19.381 TSLocationManager: [c.t.l.s.TSScheduleManager cancelOneShot]
+ 04-08 10:58:19.381 TSLocationManager:   ⏰ Cancel OneShot: MOTION_TRIGGER_DELAY &lt;-- timer cancelled</code></pre>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
 					<a name="notification" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> notification</h3>
 					<div class="tsd-signature tsd-kind-icon">notification<span class="tsd-signature-symbol">:</span> <a href="_react_native_background_geolocation_.notification.html" class="tsd-signature-type">Notification</a></div>
@@ -2460,8 +2701,8 @@ BackgroundGeolocation.ready({
 							<dt class="tsd-comment-tag-example">example</dt>
 							<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
   notification: {
-    title: <span class="hljs-string">'Background tracking engaged'</span>,
-    text: <span class="hljs-string">'My notification text'</span>
+    title: <span class="hljs-string">"Background tracking engaged"</span>,
+    text: <span class="hljs-string">"My notification text"</span>
   }
 })</code></pre>
 							</dd>
@@ -2592,17 +2833,17 @@ BackgroundGeolocation.ready({
 						</div>
 						<dl class="tsd-comment-tags">
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">BackgroundGeolocation.ready({
-  <span class="hljs-attr">url</span>: <span class="hljs-string">'https://my-server.com/locations'</span>,
-  <span class="hljs-attr">params</span>: {
-    <span class="hljs-string">'user_id'</span>: <span class="hljs-number">1234</span>,
-    <span class="hljs-string">'device_id'</span>: <span class="hljs-string">'abc123'</span>
+							<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
+  url: <span class="hljs-string">"https://my-server.com/locations"</span>,
+  params: {
+    <span class="hljs-string">"user_id"</span>: <span class="hljs-number">1234</span>,
+    <span class="hljs-string">"device_id"</span>: <span class="hljs-string">"abc123"</span>
   }
 );</code></pre>
 								<p>Observing the HTTP request arriving at your server:</p>
 							</dd>
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">POST /locations
+							<dd><pre><code class="language-typescript">POST /locations
  {
   <span class="hljs-string">"location"</span>: {
     <span class="hljs-string">"coords"</span>: {
@@ -2614,7 +2855,7 @@ BackgroundGeolocation.ready({
     }
   },
   <span class="hljs-string">"user_id"</span>: <span class="hljs-number">1234</span>,  <span class="hljs-comment">// &lt;-- params appended to the data.</span>
-  <span class="hljs-string">"device_id"</span>: <span class="hljs-string">'abc123'</span>
+  <span class="hljs-string">"device_id"</span>: <span class="hljs-string">"abc123"</span>
 }</code></pre>
 								<h3 id="-see-also-">ℹ️ See also:</h3>
 								<ul>
@@ -2710,13 +2951,13 @@ BackgroundGeolocation.ready({
 								</ul>
 							</dd>
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">BackgroundGeolocation.onHeartbeat(<span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> {
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'[onHeartbeat] '</span>, event);
+							<dd><pre><code class="language-typescript">BackgroundGeolocation.onHeartbeat(<span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> {
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"[onHeartbeat] "</span>, event);
 });
 
 BackgroundGeolocation.ready({
-  <span class="hljs-attr">preventSuspend</span>: <span class="hljs-literal">true</span>,
-  <span class="hljs-attr">heartbeatInterval</span>: <span class="hljs-number">60</span>
+  preventSuspend: <span class="hljs-literal">true</span>,
+  heartbeatInterval: <span class="hljs-number">60</span>
 });</code></pre>
 								<h3 id="-see-also-">ℹ️ See also:</h3>
 								<ul>
@@ -2744,15 +2985,15 @@ BackgroundGeolocation.ready({
 							<dd><p>Optionally, you can specify <strong><code>reset: false</code></strong> to <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#ready">BackgroundGeolocation.ready</a>.</p>
 							</dd>
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript"><span class="hljs-keyword">await</span> BackgroundGeolocation.setConfig({
-  <span class="hljs-attr">distanceFilter</span>: <span class="hljs-number">100</span>
+							<dd><pre><code class="language-typescript"><span class="hljs-keyword">await</span> BackgroundGeolocation.setConfig({
+  distanceFilter: <span class="hljs-number">100</span>
 });
 
 BackgroundGeolocation.ready({
-  <span class="hljs-attr">reset</span>: <span class="hljs-literal">false</span>,  <span class="hljs-comment">// &lt;-- set false to ALWAYS re-apply persisted configuration, ignoring config provided to `#ready`</span>
+  reset: <span class="hljs-literal">false</span>,  <span class="hljs-comment">// &lt;-- set false to ALWAYS re-apply persisted configuration, ignoring config provided to `#ready`</span>
   distanceFilter: <span class="hljs-number">50</span>
-}, (state) =&gt; {
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Ready with reset: false: '</span>, state.distanceFilter);  <span class="hljs-comment">// &lt;-- 100, not 10</span>
+}, <span class="hljs-function">(<span class="hljs-params">state</span>) =&gt;</span> {
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Ready with reset: false: "</span>, state.distanceFilter);  <span class="hljs-comment">// &lt;-- 100, not 10</span>
 });</code></pre>
 							</dd>
 						</dl>
@@ -2766,11 +3007,11 @@ BackgroundGeolocation.ready({
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Configures an automated, cron-like schedule for the plugin to <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#start">start</a> / <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#stop">stop</a> tracking at pre-defined times.</p>
+							<p>Configures an automated, cron-like schedule for the plugin to <a href="_react_native_background_geolocation_.sqlquery.html#start">start</a> / <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#stop">stop</a> tracking at pre-defined times.</p>
 						</div>
 						<dl class="tsd-comment-tags">
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">  <span class="hljs-string">"{DAY(s)} {START_TIME}-{END_TIME}"</span></code></pre>
+							<dd><pre><code class="language-typescript">  <span class="hljs-string">"{DAY(s)} {START_TIME}-{END_TIME}"</span></code></pre>
 								<ul>
 									<li>The <code>START_TIME</code>, <code>END_TIME</code> are in <strong>24h format</strong>.</li>
 									<li>The <code>DAY</code> param corresponds to the <code>Locale.US</code>, such that <strong>Sunday=1</strong>; <strong>Saturday=7</strong>).</li>
@@ -2778,15 +3019,15 @@ BackgroundGeolocation.ready({
 								</ul>
 							</dd>
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">BackgroundGeolocation.ready({
+							<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
   .
   .
   .
   schedule: [
-    <span class="hljs-string">'1 17:30-21:00'</span>,    <span class="hljs-comment">// Sunday: 5:30pm-9:00pm</span>
-    <span class="hljs-string">'2-6 9:00-17:00'</span>,   <span class="hljs-comment">// Mon-Fri: 9:00am to 5:00pm</span>
-    <span class="hljs-string">'2,4,6 20:00-00:00'</span>,<span class="hljs-comment">// Mon, Web, Fri: 8pm to midnight (next day)</span>
-    <span class="hljs-string">'7 10:00-19:00'</span>     <span class="hljs-comment">// Sat: 10am-7pm</span>
+    <span class="hljs-string">"1 17:30-21:00"</span>,    <span class="hljs-comment">// Sunday: 5:30pm-9:00pm</span>
+    <span class="hljs-string">"2-6 9:00-17:00"</span>,   <span class="hljs-comment">// Mon-Fri: 9:00am to 5:00pm</span>
+    <span class="hljs-string">"2,4,6 20:00-00:00"</span>,<span class="hljs-comment">// Mon, Web, Fri: 8pm to midnight (next day)</span>
+    <span class="hljs-string">"7 10:00-19:00"</span>     <span class="hljs-comment">// Sat: 10am-7pm</span>
   ]
 }).then(<span class="hljs-function">(<span class="hljs-params">state</span>) =&gt;</span> {
   <span class="hljs-comment">// Start the Scheduler</span>
@@ -2796,7 +3037,7 @@ BackgroundGeolocation.ready({
 <span class="hljs-comment">// Listen to #onSchedule events:</span>
 BackgroundGeolocation.onSchedule(<span class="hljs-function">(<span class="hljs-params">state</span>) =&gt;</span> {
   <span class="hljs-keyword">let</span> enabled = state.enabled;
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'[onSchedule] - enabled? '</span>, enabled);
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"[onSchedule] - enabled? "</span>, enabled);
 });
 .
 .
@@ -2808,13 +3049,13 @@ BackgroundGeolocation.stop();
 
 <span class="hljs-comment">// Or modify the schedule with usual #setConfig method</span>
 BackgroundGeolocation.setConfig({
-  <span class="hljs-attr">schedule</span>: [
-    <span class="hljs-string">'1-7 9:00-10:00'</span>,
-    <span class="hljs-string">'1-7 11:00-12:00'</span>,
-    <span class="hljs-string">'1-7 13:00-14:00'</span>,
-    <span class="hljs-string">'1-7 15:00-16:00'</span>,
-    <span class="hljs-string">'1-7 17:00-18:00'</span>,
-    <span class="hljs-string">'2,4,6 19:00-22:00'</span>
+  schedule: [
+    <span class="hljs-string">"1-7 9:00-10:00"</span>,
+    <span class="hljs-string">"1-7 11:00-12:00"</span>,
+    <span class="hljs-string">"1-7 13:00-14:00"</span>,
+    <span class="hljs-string">"1-7 15:00-16:00"</span>,
+    <span class="hljs-string">"1-7 17:00-18:00"</span>,
+    <span class="hljs-string">"2,4,6 19:00-22:00"</span>
   ]
 });</code></pre>
 								<h3 id="literal-dates">Literal Dates</h3>
@@ -2823,8 +3064,8 @@ BackgroundGeolocation.setConfig({
 							<dt class="tsd-comment-tag-example">example</dt>
 							<dd><pre><code>  "<span class="hljs-selector-tag">yyyy-mm-dd</span> <span class="hljs-selector-tag">HH</span><span class="hljs-selector-pseudo">:mm-HH</span><span class="hljs-selector-pseudo">:mm"</span></code></pre></dd>
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">BackgroundGeolocation.ready({
-  <span class="hljs-attr">schedule</span>: [
+							<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
+  schedule: [
     <span class="hljs-string">"2018-01-01 09:00-17:00"</span>
   ]
 });</code></pre>
@@ -2833,19 +3074,19 @@ BackgroundGeolocation.setConfig({
 							<dt class="tsd-comment-tag-example">example</dt>
 							<dd><pre><code>  "<span class="hljs-selector-tag">yyyy-mm-dd-HH</span><span class="hljs-selector-pseudo">:mm</span> <span class="hljs-selector-tag">yyyy-mm-dd-HH</span><span class="hljs-selector-pseudo">:mm"</span></code></pre></dd>
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript">
+							<dd><pre><code class="language-typescript">
 schedule: [
     <span class="hljs-string">"2018-01-01-09:00 2019-01-01-17:00"</span>  <span class="hljs-comment">// &lt;-- track for 1 year</span>
   ]</code></pre>
 								<h2 id="scheduling-geofences-only-or-location-geofences-tracking">Scheduling Geofences-only or Location + Geofences Tracking</h2>
 								<p>You can choose to schedule either geofences-only (<a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#startgeofences">BackgroundGeolocation.startGeofences</a>) or location + geofences (<a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#start">BackgroundGeolocation.start</a>) tracking with each configured schedule by appending the text <code>geofence</code> or <code>location</code> (default):</p>
 								<p>In the following schedule, the SDK will engage <em>location + geofences</em> tracking between 9am to 5pm.  From 6pm to midnight, only <em>geofences</em> will be monitored.</p>
-								<pre><code class="language-javascript">schedule: [
+								<pre><code class="language-typescript">schedule: [
   <span class="hljs-string">"1-7 09:00-17:00 location"</span>,
   <span class="hljs-string">"1-7 18:00-12:00 geofence"</span>
 ]</code></pre>
 								<p>Since <code>location</code> is the default tracking-mode, it can be omitted:</p>
-								<pre><code class="language-javascript">schedule: [
+								<pre><code class="language-typescript">schedule: [
   <span class="hljs-string">"1-7 09:00-10:00"</span>,  <span class="hljs-comment">// &lt;-- location is default</span>
   <span class="hljs-string">"1-7 10:00-11:00 geofence"</span>
   <span class="hljs-string">"1-7 12:00-13:00"</span>,
@@ -2882,10 +3123,25 @@ schedule: [
 						<div class="lead">
 							<p><strong>Android only</strong> Force the Android scheduler to use <code>AlarmManager</code> (more precise) instead of <code>JobScheduler</code>.  Defaults to <code>false</code>.</p>
 						</div>
-						<pre><code class="language-typescript">BackgroundGeolocation.ready(bg.Config(
-  schedule: [<span class="hljs-string">'1-7 09:00-17:00'</span>],
+						<pre><code class="language-typescript">BackgroundGeolocation.ready({
+  schedule: [<span class="hljs-string">"1-7 09:00-17:00"</span>],
   scheduleUseAlarmManager: <span class="hljs-literal">true</span>
-));</code></pre>
+});</code></pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+					<a name="showsbackgroundlocationindicator" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> shows<wbr>Background<wbr>Location<wbr>Indicator</h3>
+					<div class="tsd-signature tsd-kind-icon">shows<wbr>Background<wbr>Location<wbr>Indicator<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>[<strong>iOS Only</strong>] A Boolean indicating whether the status bar changes its appearance when an app uses location services in the background with <code>Always</code> authorization.</p>
+						</div>
+						<p>The default value of this property is <code>false</code>. The background location usage indicator is a blue bar or a blue pill in the status bar on iOS; on watchOS the indicator is a small icon. Users can tap the indicator to return to your app.</p>
+						<p>This property affects only apps that received <code>Always</code> authorization. When such an app moves to the background, the system uses this property to determine whether to change the status bar appearance to indicate that location services are in use. Set this value to true to maintain transparency with the user.</p>
+						<p>For apps with When In Use authorization, the system changes the appearance of the status bar when the app uses location services in the background.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
@@ -2922,16 +3178,6 @@ schedule: [
 									&quot;background-fetch&quot; events, which typically fire about every 15 minutes &mdash; these too are capable of rebooting your app after a device
 								reboot.</p>
 								<h3 id="android">Android</h3>
-								<p>Android will reboot the plugin&#39;s background-service <em>immediately</em> after device reboot.  However, just like <a href="_react_native_background_geolocation_.config.html#stoponterminate">stopOnTerminate</a> <strong><code>false</code></strong>,
-									the plugin will be running &quot;headless&quot; without your Application code.  If you wish for your Application to boot as well, you may
-								configure any of the following <strong><code>forceReloadOnXXX</code></strong> options:</p>
-								<ul>
-									<li><a href="_react_native_background_geolocation_.config.html#forcereloadonlocationchange">forceReloadOnLocationChange</a></li>
-									<li><a href="_react_native_background_geolocation_.config.html#forcereloadonmotionchange">forceReloadOnMotionChange</a></li>
-									<li><a href="_react_native_background_geolocation_.config.html#forcereloadongeofence">forceReloadOnGeofence</a></li>
-									<li><a href="_react_native_background_geolocation_.config.html#forcereloadonboot">forceReloadOnBoot</a></li>
-									<li><a href="_react_native_background_geolocation_.config.html#forcereloadonheartbeat">forceReloadOnHeartbeat</a></li>
-								</ul>
 								<h3 id="-see-also-">ℹ️ See also:</h3>
 								<ul>
 									<li><a href="_react_native_background_geolocation_.config.html#enableheadless">enableHeadless</a></li>
@@ -2980,7 +3226,7 @@ schedule: [
 						<div class="lead">
 							<p>Automatically <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#stop">stop</a> tracking after <em>x</em> minutes.</p>
 						</div>
-						<p>The plugin can optionally automatically <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#stop">stop</a> after some number of minutes elapses after the <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#start">start</a> method was called.</p>
+						<p>The plugin can optionally automatically <a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html#stop">stop</a> after some number of minutes elapses after the <a href="_react_native_background_geolocation_.sqlquery.html#start">start</a> method was called.</p>
 						<dl class="tsd-comment-tags">
 							<dt class="tsd-comment-tag-example">example</dt>
 							<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
@@ -3103,6 +3349,52 @@ schedule: [
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+					<a name="transistorauthorizationtoken" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> transistor<wbr>Authorization<wbr>Token</h3>
+					<div class="tsd-signature tsd-kind-icon">transistor<wbr>Authorization<wbr>Token<span class="tsd-signature-symbol">:</span> <a href="_react_native_background_geolocation_.transistorauthorizationtoken.html" class="tsd-signature-type">TransistorAuthorizationToken</a></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p><em>Convenience</em> option to automatically configures the SDK to upload locations to the Transistor Software demo server at <a href="http://tracker.transistorsoft.com">http://tracker.transistorsoft.com</a> (or your own local instance of <a href="https://github.com/transistorsoft/background-geolocation-console">background-geolocation-console</a>)</p>
+						</div>
+						<p>See <a href="_react_native_background_geolocation_.transistorauthorizationtoken.html">TransistorAuthorizationToken</a>.  This option will <strong>automatically configures</strong> the <a href="_react_native_background_geolocation_.config.html#url">url</a> to point at the Demo server as well as well as the required <a href="_react_native_background_geolocation_.authorization.html">Authorization</a> configuration.</p>
+						<dl class="tsd-comment-tags">
+							<dt class="tsd-comment-tag-example">example</dt>
+							<dd><pre><code class="language-typescript"><span class="hljs-keyword">let</span> token = <span class="hljs-keyword">await</span>
+  BackgroundGeolocation.findOrCreateTransistorAuthorizationToken(<span class="hljs-string">"my-company-name"</span>, <span class="hljs-string">"my-username"</span>);
+
+BackgroundGeolocation.ready({
+  transistorAuthorizationToken: token
+});</code></pre>
+								<p>This <em>convenience</em> option merely performs the following <a href="_react_native_background_geolocation_.authorization.html">Authorization</a> configuration <em>automatically</em> for you:</p>
+							</dd>
+							<dt class="tsd-comment-tag-example">example</dt>
+							<dd><pre><code class="language-typescript"><span class="hljs-comment">// Base url to Transistor Demo Server.</span>
+<span class="hljs-keyword">const</span> url = <span class="hljs-string">"http://tracker.transistorsoft.com"</span>;
+
+<span class="hljs-comment">// Register for an authorization token from server.</span>
+<span class="hljs-keyword">let</span> token = <span class="hljs-keyword">await</span>
+  BackgroundGeolocation.findOrCreateTransistorAuthorizationToken(<span class="hljs-string">"my-company-name"</span>, <span class="hljs-string">"my-username"</span>);
+
+BackgroundGeolocation.ready({
+  url: url + <span class="hljs-string">"/v2/locations"</span>,
+  authorization: {
+    strategy: <span class="hljs-string">"JWT"</span>,
+    accessToken: token.accessToken,
+    refreshToken: token.refreshToken,
+    refreshUrl: url + <span class="hljs-string">"/v2/refresh_token"</span>,
+    refreshPayload: {
+      refresh_token: <span class="hljs-string">"{refreshToken}"</span>
+    },
+    expires: token.expires
+  }
+});</code></pre>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
 					<a name="triggeractivities" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> trigger<wbr>Activities</h3>
 					<div class="tsd-signature tsd-kind-icon">trigger<wbr>Activities<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
@@ -3140,14 +3432,14 @@ schedule: [
 								<p>If you wish, you can configure the plugin to only engage the <strong>moving</strong> state for vehicles-only by providing just <code>&quot;in_vehicle&quot;</code>, for example.</p>
 							</dd>
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><pre><code class="language-javascript"><span class="hljs-comment">// Only trigger tracking for vehicles</span>
+							<dd><pre><code class="language-typescript"><span class="hljs-comment">// Only trigger tracking for vehicles</span>
 BackgroundGeolocation.ready({
-  <span class="hljs-attr">triggerActivities</span>: <span class="hljs-string">'in_vehicle'</span>
+  triggerActivities: <span class="hljs-string">"in_vehicle"</span>
 );
 
 <span class="hljs-comment">// Only trigger tracking for on_foot, walking and running</span>
 BackgroundGeolocation.ready({
-  <span class="hljs-attr">triggerActivities</span>: <span class="hljs-string">'on_foot, walking, running'</span>
+  triggerActivities: <span class="hljs-string">"on_foot, walking, running"</span>
 );</code></pre>
 							</dd>
 						</dl>
@@ -3166,7 +3458,7 @@ BackgroundGeolocation.ready({
 						<dl class="tsd-comment-tags">
 							<dt class="tsd-comment-tag-example">example</dt>
 							<dd><pre><code class="language-typescript">BackgroundGeolocation.ready({
-  url: <span class="hljs-string">'https://my-server.com/locations'</span>
+  url: <span class="hljs-string">"https://my-server.com/locations"</span>
 });</code></pre>
 								<p>You can observe the plugin performing HTTP requests in the logs for both iOS and Android (<em>See Wiki <a href="https://github.com/transistorsoft/react-native-background-geolocation/wiki/Debugging">Debugging</a></em>):</p>
 							</dd>
@@ -3267,11 +3559,11 @@ BackgroundGeolocation.ready({
 								<p>A location will be recorded several times per hour while the device is in the <em>moving</em> state.  No foreground-service will be run (nor its corresponding persistent <a href="_react_native_background_geolocation_.notification.html">Notification</a>).</p>
 							</dd>
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><p><strong><code>useSignificantChanges: true</code></strong>
+							<dd><p><strong><code>useSignificantChangesOnly: true</code></strong>
 								<img src="https://dl.dropboxusercontent.com/s/wdl9e156myv5b34/useSignificantChangesOnly.png?dl=1" alt=""></p>
 							</dd>
 							<dt class="tsd-comment-tag-example">example</dt>
-							<dd><p><strong><code>useSignificantChanges: false</code> (Default)</strong>
+							<dd><p><strong><code>useSignificantChangesOnly: false</code> (Default)</strong>
 								<img src="https://dl.dropboxusercontent.com/s/hcxby3sujqanv9q/useSignificantChangesOnly-false.png?dl=1" alt=""></p>
 							</dd>
 						</dl>
@@ -3284,6 +3576,12 @@ BackgroundGeolocation.ready({
 				<ul class="before-current">
 					<li class=" tsd-kind-class tsd-parent-kind-module">
 						<a href="../classes/_react_native_background_geolocation_.backgroundgeolocation.html" class="tsd-kind-icon">Background<wbr>Geolocation</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-is-not-exported">
+						<a href="_react_native_background_geolocation_.authorization.html" class="tsd-kind-icon">Authorization</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-is-not-exported">
+						<a href="_react_native_background_geolocation_.authorizationevent.html" class="tsd-kind-icon">Authorization<wbr>Event</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-is-not-exported">
 						<a href="_react_native_background_geolocation_.battery.html" class="tsd-kind-icon">Battery</a>
@@ -3301,6 +3599,9 @@ BackgroundGeolocation.ready({
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
 								<a href="_react_native_background_geolocation_.config.html#allowidenticallocations" class="tsd-kind-icon">allow<wbr>Identical<wbr>Locations</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+								<a href="_react_native_background_geolocation_.config.html#authorization" class="tsd-kind-icon">authorization</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
 								<a href="_react_native_background_geolocation_.config.html#autosync" class="tsd-kind-icon">auto<wbr>Sync</a>
@@ -3322,6 +3623,9 @@ BackgroundGeolocation.ready({
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
 								<a href="_react_native_background_geolocation_.config.html#desiredodometeraccuracy" class="tsd-kind-icon">desired<wbr>Odometer<wbr>Accuracy</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+								<a href="_react_native_background_geolocation_.config.html#disableautosynconcellular" class="tsd-kind-icon">disable<wbr>Auto<wbr>Sync<wbr>OnCellular</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
 								<a href="_react_native_background_geolocation_.config.html#disableelasticity" class="tsd-kind-icon">disable<wbr>Elasticity</a>
@@ -3346,6 +3650,9 @@ BackgroundGeolocation.ready({
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
 								<a href="_react_native_background_geolocation_.config.html#enabletimestampmeta" class="tsd-kind-icon">enable<wbr>Timestamp<wbr>Meta</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+								<a href="_react_native_background_geolocation_.config.html#encrypt" class="tsd-kind-icon">encrypt</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
 								<a href="_react_native_background_geolocation_.config.html#extras" class="tsd-kind-icon">extras</a>
@@ -3441,6 +3748,9 @@ BackgroundGeolocation.ready({
 								<a href="_react_native_background_geolocation_.config.html#minimumactivityrecognitionconfidence" class="tsd-kind-icon">minimum<wbr>Activity<wbr>Recognition<wbr>Confidence</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+								<a href="_react_native_background_geolocation_.config.html#motiontriggerdelay" class="tsd-kind-icon">motion<wbr>Trigger<wbr>Delay</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
 								<a href="_react_native_background_geolocation_.config.html#notification" class="tsd-kind-icon">notification</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
@@ -3486,6 +3796,9 @@ BackgroundGeolocation.ready({
 								<a href="_react_native_background_geolocation_.config.html#scheduleusealarmmanager" class="tsd-kind-icon">schedule<wbr>Use<wbr>Alarm<wbr>Manager</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+								<a href="_react_native_background_geolocation_.config.html#showsbackgroundlocationindicator" class="tsd-kind-icon">shows<wbr>Background<wbr>Location<wbr>Indicator</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
 								<a href="_react_native_background_geolocation_.config.html#speedjumpfilter" class="tsd-kind-icon">speed<wbr>Jump<wbr>Filter</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
@@ -3510,6 +3823,9 @@ BackgroundGeolocation.ready({
 								<a href="_react_native_background_geolocation_.config.html#stoptimeout" class="tsd-kind-icon">stop<wbr>Timeout</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+								<a href="_react_native_background_geolocation_.config.html#transistorauthorizationtoken" class="tsd-kind-icon">transistor<wbr>Authorization<wbr>Token</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
 								<a href="_react_native_background_geolocation_.config.html#triggeractivities" class="tsd-kind-icon">trigger<wbr>Activities</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
@@ -3530,6 +3846,9 @@ BackgroundGeolocation.ready({
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-is-not-exported">
 						<a href="_react_native_background_geolocation_.currentpositionrequest.html" class="tsd-kind-icon">Current<wbr>Position<wbr>Request</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-is-not-exported">
+						<a href="_react_native_background_geolocation_.deviceinfo.html" class="tsd-kind-icon">Device<wbr>Info</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-is-not-exported">
 						<a href="_react_native_background_geolocation_.devicesettings.html" class="tsd-kind-icon">Device<wbr>Settings</a>
@@ -3574,10 +3893,16 @@ BackgroundGeolocation.ready({
 						<a href="_react_native_background_geolocation_.providerchangeevent.html" class="tsd-kind-icon">Provider<wbr>Change<wbr>Event</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-is-not-exported">
+						<a href="_react_native_background_geolocation_.sqlquery.html" class="tsd-kind-icon">SQLQuery</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-is-not-exported">
 						<a href="_react_native_background_geolocation_.sensors.html" class="tsd-kind-icon">Sensors</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-is-not-exported">
 						<a href="_react_native_background_geolocation_.state.html" class="tsd-kind-icon">State</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-is-not-exported">
+						<a href="_react_native_background_geolocation_.transistorauthorizationtoken.html" class="tsd-kind-icon">Transistor<wbr>Authorization<wbr>Token</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-is-not-exported">
 						<a href="_react_native_background_geolocation_.watchpositionrequest.html" class="tsd-kind-icon">Watch<wbr>Position<wbr>Request</a>
@@ -3587,6 +3912,9 @@ BackgroundGeolocation.ready({
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-is-not-exported">
 						<a href="../modules/_react_native_background_geolocation_.html#authorizationstatus" class="tsd-kind-icon">Authorization<wbr>Status</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-is-not-exported">
+						<a href="../modules/_react_native_background_geolocation_.html#extras" class="tsd-kind-icon">Extras</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-is-not-exported">
 						<a href="../modules/_react_native_background_geolocation_.html#httpmethod" class="tsd-kind-icon">Http<wbr>Method</a>
@@ -3608,6 +3936,9 @@ BackgroundGeolocation.ready({
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-is-not-exported">
 						<a href="../modules/_react_native_background_geolocation_.html#persistmode" class="tsd-kind-icon">Persist<wbr>Mode</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-is-not-exported">
+						<a href="../modules/_react_native_background_geolocation_.html#sqlqueryorder" class="tsd-kind-icon">SQLQuery<wbr>Order</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-is-not-exported">
 						<a href="../modules/_react_native_background_geolocation_.html#trackingmode" class="tsd-kind-icon">Tracking<wbr>Mode</a>

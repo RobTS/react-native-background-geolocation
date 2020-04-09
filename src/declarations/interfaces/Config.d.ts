@@ -1,5 +1,6 @@
 /// <reference path="../types.d.ts" />
 /// <reference path="./LocationAuthorizationAlert.d.ts" />
+
 ///
 declare module "react-native-background-geolocation" {
   /**
@@ -8,13 +9,13 @@ declare module "react-native-background-geolocation" {
   * The following configuration options are used to configure the SDK via the methods [[BackgroundGeolocation.ready]] and [[BackgroundGeolocation.setConfig]].
   *
   * @example
-  * ```javascript
+  * ```typescript
   * BackgroundGeolocation.ready({
   *   desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
   *   distanceFilter: 10,
   *   stopOnTerminate: false,
   *   startOnBoot: true,
-  *   url: 'http://my.server.com',
+  *   url: "http://my.server.com",
   *   params: {
   *     "user_id": 123
   *   },
@@ -22,7 +23,7 @@ declare module "react-native-background-geolocation" {
   *     "my-auth-token":"secret-key"
   *   }
   * }).then((state) => {
-  *   console.log('[ready] BackgroundGeolocation is configured and ready to use');
+  *   console.log("[ready] BackgroundGeolocation is configured and ready to use");
   *
   *   BackgroundGeolocation.start();
   * })
@@ -30,7 +31,7 @@ declare module "react-native-background-geolocation" {
   * // Or with #setConfig
   * BackgroundGeolocation.setConfig({
   *   extras: {route_id: 1234},
-  *   url: 'https://my.new.server.com'
+  *   url: "https://my.new.server.com"
   * })
   * ```
   *
@@ -57,6 +58,7 @@ declare module "react-native-background-geolocation" {
   |-------------|-----------|-----------------------------------|
   | [[stationaryRadius]] | `Integer`  | __Default: `25`__.  When stopped, the minimum distance the device must move beyond the stationary location for aggressive background-tracking to engage. |
   | [[locationAuthorizationAlert]] | `Object` | When you configure the plugin [[locationAuthorizationRequest]] `Always` or `WhenInUse` and the user *changes* that value in the app's location-services settings or *disables* location-services, the plugin will display an Alert directing the user to the **Settings** screen. |
+  | [[showsBackgroundLocationIndicator]] | `Boolean` | A `boolean` indicating whether the status bar changes its appearance when an app uses location services in the background with `Always` authorization. |
 
 
   ### [Geolocation] Android Options
@@ -78,13 +80,13 @@ declare module "react-native-background-geolocation" {
   | [[stopTimeout]] | `Integer` | __Default: `5`__.  The number of **minutes** to wait before turning off location-services after the ActivityRecognition System (ARS) detects the device is `STILL` |
   | [[stopDetectionDelay]] | `Integer` | __Default: `0`__.  Number of **minutes** to delay the stop-detection system from being activated.|
   | [[disableStopDetection]] | `Boolean` | __Default: `false`__.  Disable accelerometer-based **Stop-detection System**. ⚠️ Not recommended|
+  | [[disableMotionActivityUpdates]] | `Boolean` | __Default: `false`__.  Disable motion-activity updates (eg: "walking", "in_vehicle"). Requires permission from the user. ⚠️ The plugin is **HIGHLY** optimized to use the Motion API for improved battery performance.  You are **STRONLY** recommended to **NOT** disable this. |
 
   ### [Activity Recognition] iOS Options
 
   | Option      | Type      | Note                              |
   |-------------|-----------|-----------------------------------|
   | [[activityType]] | [[ActivityType]] |  __Default: [[BackgroundGeolocation.ACTIVITY_TYPE_OTHER]]__.  Presumably, this affects ios GPS algorithm.  See [Apple docs](https://developer.apple.com/library/ios/documentation/CoreLocation/Reference/CLLocationManager_Class/CLLocationManager/CLLocationManager.html#//apple_ref/occ/instp/CLLocationManager/activityType) for more information |
-  | [[disableMotionActivityUpdates]] | `Boolean` | __Default: `false`__.  Disable iOS motion-activity updates (eg: "walking", "in_vehicle").  This feature requires a device having the **M7** co-processor (ie: iPhone 5s and up). ⚠️ The plugin is **HIGHLY** optimized to use this for improved battery performance.  You are **STRONLY** recommended to **NOT** disable this. |
 
 
   ## HTTP & Persistence Options
@@ -135,12 +137,6 @@ declare module "react-native-background-geolocation" {
   | [[foregroundService]] | `Boolean` | __Default: `false`__.  Set `true` to make the plugin *mostly* immune to OS termination due to memory pressure from other apps. |
   | [[enableHeadless]] | `Boolean` | __Default: `false`__.  Set to `true` to enable "Headless" mode when the user terminates the application.  In this mode, you can respond to all the plugin's events in the native Android environment.  For more information, see the wiki for [Android Headless Mode](github:wiki/Android-Headless-Mode) |
   | [[notification]]  | [[Notification]] | Configures the required persistent [[Notification]] of the foreground service. |
-  | [[forceReloadOnMotionChange]] | `Boolean` | __Default: `false`__.  Launch your app whenever the [[BackgroundGeolocation.onMotionChange]] event fires. |
-  | [[forceReloadOnLocationChange]] | `Boolean` | __Default: `false`__.  Launch your app whenever the [[BackgroundGeolocation.onLocation]] event fires. |
-  | [[forceReloadOnGeofence]] | `Boolean` | __Default: `false`__.  Launch your app whenever the [[BackgroundGeolocation.onGeofence]] event fires. |
-  | [[forceReloadOnHeartbeat]] | `Boolean` | __Default: `false`__.  Launch your app whenever the [[BackgroundGeolocation.onHeartbeat]] event fires. |
-  | [[forceReloadOnSchedule]] | `Boolean` | __Default: `false`__.  Launch your app whenever a [[BackgroundGeolocation.onSchedule]] event fires. |
-  | [[forceReloadOnBoot]] | `Boolean` | __Default: `false`__.  If the user reboots the device with the plugin configured for [[startOnBoot]]: true, your app will launch when the device is rebooted. |
 
 
   ## Geofencing Options
@@ -170,6 +166,50 @@ declare module "react-native-background-geolocation" {
   *
   */
   interface Config {
+    /**
+    * *Convenience* option to automatically configures the SDK to upload locations to the Transistor Software demo server at http://tracker.transistorsoft.com (or your own local instance of [background-geolocation-console](https://github.com/transistorsoft/background-geolocation-console))
+    *
+    * See [[TransistorAuthorizationToken]].  This option will **automatically configures** the [[url]] to point at the Demo server as well as well as the required [[Authorization]] configuration.
+    *
+    * @example
+    * ```typescript
+    * let token = await
+    *   BackgroundGeolocation.findOrCreateTransistorAuthorizationToken("my-company-name", "my-username");
+    *
+    * BackgroundGeolocation.ready({
+    *   transistorAuthorizationToken: token
+    * });
+    * ```
+    *
+    * This *convenience* option merely performs the following [[Authorization]] configuration *automatically* for you:
+    *
+    * @example
+    * ```typescript
+    * // Base url to Transistor Demo Server.
+    * const url = "http://tracker.transistorsoft.com";
+    *
+    * // Register for an authorization token from server.
+    * let token = await
+    *   BackgroundGeolocation.findOrCreateTransistorAuthorizationToken("my-company-name", "my-username");
+    *
+    * BackgroundGeolocation.ready({
+    *   url: url + "/v2/locations",
+    *   authorization: {
+    *     strategy: "JWT",
+    *     accessToken: token.accessToken,
+    *     refreshToken: token.refreshToken,
+    *     refreshUrl: url + "/v2/refresh_token",
+    *     refreshPayload: {
+    *       refresh_token: "{refreshToken}"
+    *     },
+    *     expires: token.expires
+    *   }
+    * });
+    * ```
+    *
+    */
+    transistorAuthorizationToken?: TransistorAuthorizationToken;
+
     /**
     * Specify the desired-accuracy of the geolocation system.
     *
@@ -453,7 +493,7 @@ declare module "react-native-background-geolocation" {
     * To *completely* disable automatically turning off iOS location-services, you must also provide [[pausesLocationUpdatesAutomatically]] __`false`__.
     *
     * @example
-    * ```javascript
+    * ```typescript
     * BackgroundGeolocation.ready({
     *   disableStopDetection: true,
     *   pausesLocationUpdatesAutomatically: false
@@ -506,7 +546,7 @@ declare module "react-native-background-geolocation" {
     * @example
     * ```typescript
     * BackgroundGeolocation.ready({
-    *   url: 'https://my-server.com/locations'
+    *   url: "https://my-server.com/locations"
     * });
     * ```
     *
@@ -568,10 +608,10 @@ declare module "react-native-background-geolocation" {
     * Defaults to `POST`.  Valid values are `POST`, `PUT` and `OPTIONS`.
     *
     * @example
-    * ```javascript
+    * ```typescript
     * BackgroundGeolocation.ready({
-    *   url: 'http://my-server.com/locations',
-    *   method: 'PUT'
+    *   url: "http://my-server.com/locations",
+    *   method: "PUT"
     * });
     * ```
     *
@@ -585,7 +625,7 @@ declare module "react-native-background-geolocation" {
     * The root property of the JSON schema where location-data will be attached.
     *
     * @example
-    * ```javascript
+    * ```typescript
     * BackgroundGeolocation.ready({
     *   httpRootProperty: "myData",
     *   url: "https://my.server.com"
@@ -628,19 +668,19 @@ declare module "react-native-background-geolocation" {
     * Optional HTTP **`params`** appended to the JSON body of each HTTP request.
     *
     * @example
-    * ```javascript
+    * ```typescript
     * BackgroundGeolocation.ready({
-    *   url: 'https://my-server.com/locations',
+    *   url: "https://my-server.com/locations",
     *   params: {
-    *     'user_id': 1234,
-    *     'device_id': 'abc123'
+    *     "user_id": 1234,
+    *     "device_id": "abc123"
     *   }
     * );
     * ```
     *
     * Observing the HTTP request arriving at your server:
     * @example
-    * ```javascript
+    * ```typescript
     * POST /locations
     *  {
     *   "location": {
@@ -653,7 +693,7 @@ declare module "react-native-background-geolocation" {
     *     }
     *   },
     *   "user_id": 1234,  // <-- params appended to the data.
-    *   "device_id": 'abc123'
+    *   "device_id": "abc123"
     * }
     * ```
     *
@@ -668,12 +708,12 @@ declare module "react-native-background-geolocation" {
     * Optional HTTP headers applied to each HTTP request.
     *
     * @example
-    * ```javascript
+    * ```typescript
     * BackgroundGeolocation.ready({
-    *   url: 'https://my.server.com',
+    *   url: "https://my.server.com",
     *   headers: {
-    *     'authorization': "Bearer <a secret key>",
-    *     'X-FOO": "BAR'
+    *     "authorization": "Bearer <a secret key>",
+    *     "X-FOO": "BAR"
     *   }
     * });
     * ```
@@ -705,14 +745,14 @@ declare module "react-native-background-geolocation" {
     * 📘 See HTTP Guide: [[HttpEvent]]
     *
     * @example
-    * ```javascript
+    * ```typescript
     * BackgroundGeolocation.ready({
-    *   url: 'https://my-server.com/locations',
+    *   url: "https://my-server.com/locations",
     *   extras: {
-    *     'route_id': 1234
+    *     "route_id": 1234
     *   },
     *   params: {
-    *     'device_id': 'abc123'
+    *     "device_id": "abc123"
     *   }
     * });
     * ```
@@ -720,7 +760,7 @@ declare module "react-native-background-geolocation" {
     * Observing incoming requests at your server:
     *
     * @example
-    * ```javascript
+    * ```typescript
     * - POST /locations
     * {
     *   "device_id": "abc123" // <-- params appended to root of JSON
@@ -739,7 +779,7 @@ declare module "react-native-background-geolocation" {
     * }
     * ```
     */
-    extras?: Object;
+    extras?: Extras;
 
     /**
     * Immediately upload each recorded location to your configured [[url]].
@@ -753,7 +793,7 @@ declare module "react-native-background-geolocation" {
     * @example
     * ```typescript
     * BackgroundGeolocation.ready({
-    *   url: 'http://my.server.com/locations',
+    *   url: "http://my.server.com/locations",
     *   autoSync: true,
     *   params: {
     *     user_id: 1234
@@ -788,7 +828,7 @@ declare module "react-native-background-geolocation" {
     * @example
     * ```typescript
     * BackgroundGeolocation.ready({
-    *   url: 'http://my.server.com/locations',
+    *   url: "http://my.server.com/locations",
     *   autoSync: true,
     *   autoSyncThreshold: 5,
     *   batchSync: true
@@ -825,7 +865,7 @@ declare module "react-native-background-geolocation" {
     * ```typescript
     * // Using batchSync: true
     * BackgroundGeolocation.ready({
-    *   url: 'http://my.server.com/locations',
+    *   url: "http://my.server.com/locations",
     *   autoSync: true,
     *   autoSyncThreshold: 5,
     *   batchSync: true
@@ -845,7 +885,7 @@ declare module "react-native-background-geolocation" {
     * ```typescript
     * // With batchSync: false
     * BackgroundGeolocation.ready({
-    *   url: 'http://my.server.com/locations',
+    *   url: "http://my.server.com/locations",
     *   autoSync: true,
     *   autoSyncThreshold: 5,
     *   batchSync: false
@@ -895,7 +935,7 @@ declare module "react-native-background-geolocation" {
     * ```
     *
     * @example
-    * ```javascript
+    * ```typescript
     * BackgroundGeolocation.ready({
     *   locationTemplate: '{"lat":<%= latitude %>,"lng":<%= longitude %>,"event":"<%= event %>",isMoving:<%= is_moving %>}'
     * });
@@ -914,7 +954,7 @@ declare module "react-native-background-geolocation" {
     * The following will generate an error:
     *
     * @example
-    * ```javascript
+    * ```typescript
     * BackgroundGeolocation.ready({
     *   locationTemplate: '{"timestamp": <%= timestamp %>}'
     * });
@@ -929,7 +969,7 @@ declare module "react-native-background-geolocation" {
     *
     * The correct `locationTemplate` is:
     * @example
-    * ```javascript
+    * ```typescript
     * BackgroundGeolocation.ready({
     *   locationTemplate: '{"timestamp": "<%= timestamp %>"}'
     * });
@@ -945,7 +985,7 @@ declare module "react-native-background-geolocation" {
     * If you've configured [[extras]], these key-value pairs will be merged *directly* onto your location data.  For example:
     *
     * @example
-    * ```javascript
+    * ```typescript
     * BackgroundGeolocation.ready({
     *   httpRootProperty: 'data',
     *   locationTemplate: '{"lat":<%= latitude %>,"lng":<%= longitude %>}',
@@ -986,6 +1026,8 @@ declare module "react-native-background-geolocation" {
     * | `activity.confidence` | `Integer`| 0-100%      |
     * | `battery.level`       | `Float`  | 0-100%      |
     * | `battery.is_charging` | `Boolean`| Is device plugged in?|
+    * | `mock`                | `Boolean`| `true` when location was recorded from a Mock location app. |
+    * | `is_moving`           | `Boolean`| `true` if location was recorded while device was in *moving* state.|
     *
     * ### ℹ️ See also:
     * - 📘 HTTP Guide: [[HttpEvent]].
@@ -1011,7 +1053,7 @@ declare module "react-native-background-geolocation" {
     * - 📘 HTTP Guide: [[HttpEvent]].
     *
     * @example
-  	* ```javascript
+  	* ```typescript
     * BackgroundGeolocation.ready({
     *   geofenceTemplate: '{ "lat":<%= latitude %>, "lng":<%= longitude %>, "geofence":"<%= geofence.identifier %>:<%= geofence.action %>" }'
     * });
@@ -1030,7 +1072,7 @@ declare module "react-native-background-geolocation" {
     * The following will generate an error:
     *
     * @example
-  	* ```javascript
+  	* ```typescript
     * BackgroundGeolocation.ready({
     *   locationTemplate: '{"timestamp": <%= timestamp %>}'
     * });
@@ -1045,7 +1087,7 @@ declare module "react-native-background-geolocation" {
     * The correct `geofenceTemplate` is:
     *
     * @example
-  	* ```javascript
+  	* ```typescript
     * BackgroundGeolocation.ready({
     *   geofenceTemplate: '{"timestamp": "<%= timestamp %>"}'
     * });
@@ -1080,6 +1122,8 @@ declare module "react-native-background-geolocation" {
     * | `activity.confidence` | `Integer`| 0-100%      |
     * | `battery.level`       | `Float`  | 0-100%      |
     * | `battery.is_charging` | `Boolean`| Is device plugged in?|
+    * | `mock`                | `Boolean`| `true` when geofence was recorded from a Mock location app. |
+    * | `is_moving`           | `Boolean`| `true` if geofence was recorded while device was in *moving* state.|
     */
     geofenceTemplate?: string;
 
@@ -1123,6 +1167,164 @@ declare module "react-native-background-geolocation" {
     */
     persistMode?: PersistMode;
     /**
+    * Disable [[autoSync]] HTTP requests when device is connected to a Cellular connection.
+    * Defaults to `false`.  Set `true` to allow [[autoSync]] only when device is connected to Wifi.
+    *
+    * __WARNING__ This option is ignored when manually invoking [[BackgroundGeolocation.sync]].
+    *
+    */
+    disableAutoSyncOnCellular?: boolean;
+
+    /**
+    * Encrypt location data in the SDK's SQLite datbase and HTTP requests (__`AES-256-CBC`__).
+    *
+    * Defaults to `false`.  When enabled, the SDK will encrypt location data in its SQLite database.  When executing HTTP requests, the SDK will encrypt the entire request payload and encode the result as `Base64`.
+    *
+    *
+    * ```typescript
+    * BackgroundGeolocation.ready({
+    *   encrypt: true
+    * });
+    * ```
+    *
+    * ## Encryption Password
+    *
+    * The SDK's encryption stack requires a configurable encryption *password*.
+    *
+    * ## iOS
+    *
+    * - ### React Native
+    * In your __`Info.plist`__, Add the `String` key `BACKGROUND_GEOLOCATION_ENCRYPTION_PASSWORD`.
+    *
+    * ![](https://www.dropbox.com/s/amea0siu9mxroh3/ios-encryption_password.png?dl=1)
+    *
+    * - ### Cordova
+    *
+    * 📂 __`config.xml`__
+    *
+    * ```xml
+    * <platform name="ios">
+    *     <config-file parent="BACKGROUND_GEOLOCATION_ENCRYPTION_PASSWORD" target="*-Info.plist">
+    *         <string>"your secret encryption password</string>
+    *     </config-file>
+    * </platform>
+    * ```
+    *
+    * ## Android
+    *
+    * - ### React Native
+    *
+    * In your __`AndroidManifest.xml`__, add the following `<meta-data>` element:
+    *
+    * ```xml
+    * <application>
+    *     .
+    *     .
+    *     .
+    *     <meta-data
+    android:name="com.transistorsoft.locationmanager.ENCRYPTION_PASSWORD" android:value="your secret encryption password" />
+    * </application>
+    * ```
+    *
+    * - ### Cordova
+    *
+    * 📂 __`config.xml`__
+    *
+    * ```xml
+    * <platform name="android">
+    *     <config-file parent="/manifest/application" target="app/src/main/AndroidManifest.xml">
+    *         <meta-data android:name="com.transistorsoft.locationmanager.ENCRYPTION_PASSWORD" android:value="your secret encryption password" />
+    *     </config-file>
+    * </platform>
+    * ```
+    *
+    * ## RNCryptor Encryption Stack
+    *
+    * The SDK uses the [RNCryptor Encryption Stack](https://github.com/RNCryptor/RNCryptor-Spec/blob/master/RNCryptor-Spec-v3.md).  See [RNCypto](https://github.com/RNCryptor) for a list of available language implementations.
+    *
+    * After decoding the `Base64`-encoded data from the HTTP request body, you'll have a binary payload.  Extract bytes as follows:
+    *
+    * ![](https://dl.dropbox.com/s/owp61pt3cqfij16/RNCrypto-DataFormat-Spec.png?dl=1)
+    *
+    * | Name             | Description                                       |
+    * |------------------|---------------------------------------------------|
+    * | `version`        | (1 byte): Data format version. (Currently `3`).   |
+    * | `options`        | (1 byte): bit 0 - uses password (Always `1`).     |
+    * | `encryptionSalt` | (8 bytes)                                         |
+    * | `HMACSalt`       | (8 bytes)                                         |
+    * | `IV`             | (16 bytes)                                        |
+    * | `ciphertext`     | (variable) -- Encrypted in CBC mode               |
+    * | `HMAC`           | (32 bytes)
+    *
+    * See [here](https://gist.github.com/christocracy/f814dd35cfd9eced5d4de3025c38333c) for a NodeJS-based decryption example.
+    *
+    * ### Password-based decryption (abstract language)
+    *
+    * ```
+    * def Decrypt(Password, Message) =
+    *   (Version,Options,EncryptionSalt,HMACSalt,IV,Ciphertext,HMAC) = Split(Message)
+    *     EncryptionKey = PKBDF2(EncryptionSalt, 32 length, 10k iterations, Password)
+    *     HMACKey = PKBDF2(HMACSalt, 32 length, 10k iterations, password)
+    *     Header = 3 || 1 || EncryptionSalt || HMACSalt || IV
+    *     Plaintext = AES256Decrypt(Ciphertext, ModeCBC, IV, EncryptionKey)
+    *     ComputedHMAC = HMAC(Header || Ciphertext, HMACKey, SHA-256)
+    *     if ConsistentTimeEqual(ComputedHMAC, HMAC) return Plaintext else return Error
+    * ```
+    *
+    * 1. Pull apart the pieces as described in the data format.
+    * 1. Generate the encryption key using PBKDF2 (see your language docs for how to call this). Pass the password as a string, the random encryption salt, 10,000 iterations, and SHA-1 PRF. Request a length of 32 bytes.
+    * 1. Generate the HMAC key using PBKDF2 (see your language docs for how to call this). Pass the password as a string, the random HMAC salt, 10,000 iterations, and SHA-1 PRF. Request a length of 32 bytes.
+    * 1. Decrypt the data using the encryption key (above), the given IV, AES-256, and the CBC mode. This is the default mode for almost all AES encryption libraries.
+    * 1. Pass your header and ciphertext to an HMAC function, along with the HMAC key (above), and the PRF "SHA-256" (see your library's docs for what the names of the PRF functions are; this might also be called "SHA-2, 256-bits").
+    * 1. Compare the computed HMAC with the expected HMAC using a constant time equality function (see below). If they are equal, return the plaintext. Otherwise, return an error
+    *
+    * Note: The RNCryptor format v3 uses SHA-1 for PBKDF2, but SHA-256 for HMAC.
+    */
+    encrypt?: boolean;
+
+    /**
+    * Configures the SDK for [[Authorization]] with your server (eg: [JSON Web Token](https://jwt.io/)).
+    *
+    * ### ⚠️ Only [JWT](https://jwt.io/) is currently supported.
+    *
+    * The SDK will automatically apply the supplied token to HTTP request's Authorization header, eg:
+    *
+    * `"Authorization": "Bearer abcd1234..."`
+    *
+    * If provided with [[Authorization.refreshUrl]] and [[Authorization.expires]], the SDK can automatically re-register for a new token after expiration.
+    *
+    * ### ℹ️ See also:
+    * - [[Authorization]].
+    * - [[BackgroundGeolocation.onAuthorization]].
+    *
+    * @example
+    * ```
+    * // Get a reference to your app's Authorization token.
+    * let myToken = this.getMyAuthorizationToken();
+    *
+    * BackgroundGeolocation.onAuthorization((event:AuthorizationEvent) => {
+    *   console.log("[authorization]", authorization.success, authorization.response, authorization.error);
+    * });
+    *
+    * BackgroundGeolocation.ready({
+    *   url: "https://app.your.server.com/users/locations",
+    *   autoSync: true,
+    *   authorization: {
+    *     strategy: "JWT",
+    *     accessToken: myToken.accessToken,
+    *     refreshToken: myToken.refreshToken,
+    *     refreshUrl: "https://auth.your.server.com/tokens",
+    *     refreshPayload: {
+    *       the_refresh_token_field_name: "{refreshToken}"
+    *     },
+    *     expires: myToken.expiresAt
+    *   }
+    * });
+    * ```
+    */
+    authorization?: Authorization;
+
+    /**
     * Controls the order that locations are selected from the database (and uploaded to your server).
     *
     * Defaults to ascending (`ASC`), where oldest locations are synced first.  Descending (`DESC`) uploads latest locations first.
@@ -1138,16 +1340,16 @@ declare module "react-native-background-geolocation" {
     * HTTP request timeouts will fire the [[BackgroundGeolocation.onHttp]].  Defaults to `60000 ms`.
     *
     * @example
-  	* ```javascript
+  	* ```typescript
     * BackgroundGeolocation.onHttp((response) => {
     *   let success = response.success;
     *   if (!success) {
-    *     console.log('[onHttp] FAILURE: ', response);
+    *     console.log("[onHttp] FAILURE: ", response);
     *   }
     * });
     *
     * BackgroundGeolocation.ready({
-    *   url: 'https://my-server.com/locations',
+    *   url: "https://my-server.com/locations",
     *   httpTimeout: 3000
     * );
     * ```
@@ -1206,16 +1408,6 @@ declare module "react-native-background-geolocation" {
     *
     * ### Android
     *
-    * Android will reboot the plugin's background-service *immediately* after device reboot.  However, just like [[stopOnTerminate]] __`false`__,
-    * the plugin will be running "headless" without your Application code.  If you wish for your Application to boot as well, you may
-    * configure any of the following **`forceReloadOnXXX`** options:
-    *
-    * - [[forceReloadOnLocationChange]]
-    * - [[forceReloadOnMotionChange]]
-    * - [[forceReloadOnGeofence]]
-    * - [[forceReloadOnBoot]]
-    * - [[forceReloadOnHeartbeat]]
-    *
     * ### ℹ️ See also:
     * - [[enableHeadless]]
     */
@@ -1230,20 +1422,20 @@ declare module "react-native-background-geolocation" {
     * - Android *minimum* interval is `60` seconds.  It is **impossible** to have a [[heartbeatInterval]] faster than this on Android.
     *
     * @example
-  	* ```javascript
+  	* ```typescript
     * BackgroundGeolocation.ready({
     *   heartbeatInterval: 60
     * });
     *
     * BackgroundGeolocation.onHeartbeat((event) => {
-    *   console.log('[onHeartbeat] ', event);
+    *   console.log("[onHeartbeat] ", event);
     *
     *   // You could request a new location if you wish.
     *   BackgroundGeolocation.getCurrentPosition({
     *     samples: 1,
     *     persist: true
     *   }).then((location) => {
-    *     console.log('[getCurrentPosition] ', location);
+    *     console.log("[getCurrentPosition] ", location);
     *   });
     * });
     * ```
@@ -1258,7 +1450,7 @@ declare module "react-native-background-geolocation" {
     * Configures an automated, cron-like schedule for the plugin to [[start]] / [[stop]] tracking at pre-defined times.
     *
     * @example
-  	* ```javascript
+  	* ```typescript
     *   "{DAY(s)} {START_TIME}-{END_TIME}"
     * ```
     *
@@ -1268,16 +1460,16 @@ declare module "react-native-background-geolocation" {
     *
     *
     * @example
-  	* ```javascript
+  	* ```typescript
     * BackgroundGeolocation.ready({
     *   .
     *   .
     *   .
     *   schedule: [
-    *     '1 17:30-21:00',    // Sunday: 5:30pm-9:00pm
-    *     '2-6 9:00-17:00',   // Mon-Fri: 9:00am to 5:00pm
-    *     '2,4,6 20:00-00:00',// Mon, Web, Fri: 8pm to midnight (next day)
-    *     '7 10:00-19:00'     // Sat: 10am-7pm
+    *     "1 17:30-21:00",    // Sunday: 5:30pm-9:00pm
+    *     "2-6 9:00-17:00",   // Mon-Fri: 9:00am to 5:00pm
+    *     "2,4,6 20:00-00:00",// Mon, Web, Fri: 8pm to midnight (next day)
+    *     "7 10:00-19:00"     // Sat: 10am-7pm
     *   ]
     * }).then((state) => {
     *   // Start the Scheduler
@@ -1287,7 +1479,7 @@ declare module "react-native-background-geolocation" {
     * // Listen to #onSchedule events:
     * BackgroundGeolocation.onSchedule((state) => {
     *   let enabled = state.enabled;
-    *   console.log('[onSchedule] - enabled? ', enabled);
+    *   console.log("[onSchedule] - enabled? ", enabled);
     * });
     * .
     * .
@@ -1300,12 +1492,12 @@ declare module "react-native-background-geolocation" {
     * // Or modify the schedule with usual #setConfig method
     * BackgroundGeolocation.setConfig({
     *   schedule: [
-    *     '1-7 9:00-10:00',
-    *     '1-7 11:00-12:00',
-    *     '1-7 13:00-14:00',
-    *     '1-7 15:00-16:00',
-    *     '1-7 17:00-18:00',
-    *     '2,4,6 19:00-22:00'
+    *     "1-7 9:00-10:00",
+    *     "1-7 11:00-12:00",
+    *     "1-7 13:00-14:00",
+    *     "1-7 15:00-16:00",
+    *     "1-7 17:00-18:00",
+    *     "2,4,6 19:00-22:00"
     *   ]
     * });
     * ```
@@ -1320,7 +1512,7 @@ declare module "react-native-background-geolocation" {
     * ```
     *
     * @example
-  	* ```javascript
+  	* ```typescript
     * BackgroundGeolocation.ready({
     *   schedule: [
     *     "2018-01-01 09:00-17:00"
@@ -1336,7 +1528,7 @@ declare module "react-native-background-geolocation" {
     * ```
     *
     * @example
-  	* ```javascript
+  	* ```typescript
   	*
     * schedule: [
     *     "2018-01-01-09:00 2019-01-01-17:00"  // <-- track for 1 year
@@ -1349,7 +1541,7 @@ declare module "react-native-background-geolocation" {
     *
     * In the following schedule, the SDK will engage *location + geofences* tracking between 9am to 5pm.  From 6pm to midnight, only *geofences* will be monitored.
     *
-    * ```javascript
+    * ```typescript
     * schedule: [
     *   "1-7 09:00-17:00 location",
     *   "1-7 18:00-12:00 geofence"
@@ -1358,7 +1550,7 @@ declare module "react-native-background-geolocation" {
     *
     * Since `location` is the default tracking-mode, it can be omitted:
     *
-    * ```javascript
+    * ```typescript
     * schedule: [
     *   "1-7 09:00-10:00",  // <-- location is default
     *   "1-7 10:00-11:00 geofence"
@@ -1389,10 +1581,10 @@ declare module "react-native-background-geolocation" {
     * __Android only__ Force the Android scheduler to use `AlarmManager` (more precise) instead of `JobScheduler`.  Defaults to `false`.
     *
     * ```typescript
-    * BackgroundGeolocation.ready(bg.Config(
-    *   schedule: ['1-7 09:00-17:00'],
+    * BackgroundGeolocation.ready({
+    *   schedule: ["1-7 09:00-17:00"],
     *   scheduleUseAlarmManager: true
-    * ));
+    * });
     * ```
     */
     scheduleUseAlarmManager?: boolean;
@@ -1416,25 +1608,27 @@ declare module "react-native-background-geolocation" {
     * | Event                      | iOS                     | Android                    |
     * |----------------------------|-------------------------|----------------------------|
     * | `LOCATION_RECORDED`        | <mediaplayer:https://dl.dropbox.com/s/yestzqdb6gzx7an/location-recorded.mp3?dl=0>        | <mediaplayer:https://dl.dropboxusercontent.com/s/d3e821scn5fppq6/tslocationmanager_ooooiii3_full_vol.wav?dl=0>      |
-    * | `LOCATION_SAMPLE`          | <mediaplayer:https://dl.dropbox.com/s/7inowa0folzlal3/location-sample.mp3?dl=0>          | <mediaplayer:https://dl.dropbox.com/s/8bgiyifowyf9c7n/tslocationmanager_click_tap_done_checkbox5_full_vol.wav?dl=0> |
-    * | `LOCATION_ERROR`           | <mediaplayer:https://dl.dropbox.com/s/lwmx6j2ddzke1c7/location-error.mp3?dl=0>           | <mediaplayer:https://dl.dropbox.com/s/wadrz2x6elhc65l/tslocationmanager_digi_warn.mp3?dl=0>                         |
-    * | `LOCATION_SERVICES_ON`     | <mediaplayer:https://dl.dropbox.com/s/4cith8fg58bf5rh/location-services-on.mp3?dl=0>     | n/a                                                                                                                 |
-    * | `LOCATION_SERVICES_OFF`    | <mediaplayer:https://dl.dropbox.com/s/vdntndpzl1ebeq2/location-services-off.mp3?dl=0>    | n/a                                                                                                                 |
-    * | `STATIONARY_GEOFENCE_EXIT` | <mediaplayer:https://dl.dropbox.com/s/6voj31fmmoqhveb/motionchange-true.mp3?dl=0>        | <mediaplayer:https://dl.dropbox.com/s/gjgv51pot3h2n3t/tslocationmanager_zap_fast.mp3?dl=0>                          |
-    * | `MOTIONCHANGE_FALSE`       | <mediaplayer:https://dl.dropbox.com/s/qjduicy3c9d4yfv/motionchange-false.mp3?dl=0>       | <mediaplayer:https://dl.dropbox.com/s/fm4j2t8nqzd5856/tslocationmanager_marimba_drop.mp3?dl=0>                      |
-    * | `MOTIONCHANGE_TRUE`        | <mediaplayer:https://dl.dropbox.com/s/6voj31fmmoqhveb/motionchange-true.mp3?dl=0>        | <mediaplayer:https://dl.dropbox.com/s/n5mn6tr7x994ivg/tslocationmanager_chime_short_chord_up.mp3?dl=0>              |
-    * | `STOP_DETECTION_DELAY_INITIATED` | <mediaplayer:https://dl.dropbox.com/s/34jf8sifr5nkyie/stopDetectionDelay.mp3?dl=0> | n/a                                                                                                                 |
-    * | `STOP_TIMER_ON`            | <mediaplayer:https://dl.dropbox.com/s/s6dou5vv55glq5w/stop-timeout-start.mp3?dl=0>       | <mediaplayer:https://dl.dropbox.com/s/q4a9pf0vlztfafh/tslocationmanager_chime_bell_confirm.mp3?dl=0>                |
-    * | `STOP_TIMER_OFF`           | <mediaplayer:https://dl.dropbox.com/s/c39phjw0vogg8lm/stop-timeout-cancel.mp3?dl=0>      | <mediaplayer:https://dl.dropbox.com/s/9o9v826was19lyi/tslocationmanager_bell_ding_pop.mp3?dl=0>                     |
-    * | `HEARTBEAT`                | <mediaplayer:https://dl.dropbox.com/s/5rdc38isc8yf323/heartbeat.mp3?dl=0>                | <mediaplayer:https://dl.dropbox.com/s/bsdtw21hscqqy67/tslocationmanager_peep_note1.wav?dl=0>                        |
-    * | `GEOFENCE_ENTER`           | <mediaplayer:https://dl.dropbox.com/s/i4hzh4rgmd1lo20/geofence-enter.mp3?dl=0>           | <mediaplayer:https://dl.dropbox.com/s/76up5ik215xwxh1/tslocationmanager_beep_trip_up_dry.mp3?dl=0>                  |
-    * | `GEOFENCE_EXIT`            | <mediaplayer:https://dl.dropbox.com/s/nwonzl1ni15qv1k/geofence-exit.mp3?dl=0>            | <mediaplayer:https://dl.dropbox.com/s/xuyyagffheyk8r7/tslocationmanager_beep_trip_dry.mp3?dl=0>                     |
-    * | `GEOFENCE_DWELL_START`     | <mediaplayer:https://dl.dropbox.com/s/djlpw2ejaioq0g2/geofence-dwell-start.mp3?dl=0>     | n/a                                                                                                                 |
-    * | `GEOFENCE_DWELL_CANCEL`    | <mediaplayer:https://dl.dropbox.com/s/37xvre56gz3ro58/geofence-dwell-cancel.mp3?dl=0>    | n/a                                                                                                                 |
-    * | `GEOFENCE_DWELL`           | `GEOFENCE_ENTER` after `GEOFENCE_DWELL_START`                                            | <mediaplayer:https://dl.dropbox.com/s/uw5vjuatm3wnuid/tslocationmanager_beep_trip_up_echo.mp3?dl=0>                 |
-    * | `ERROR`                    | <mediaplayer:https://dl.dropbox.com/s/13c50fnepyiknnb/error.mp3?dl=0>                    | <mediaplayer:https://dl.dropbox.com/s/32e93c1t4kh69p1/tslocationmanager_music_timpani_error_01.mp3?dl=0>            |
-    * | `WARNING`                  | n/a                                                                                      | <mediaplayer:https://dl.dropbox.com/s/wadrz2x6elhc65l/tslocationmanager_digi_warn.mp3?dl=0>                         |
-    * | `BACKGROUND_FETCH`         | <mediaplayer:https://dl.dropbox.com/s/am91js76s0ehjo1/background-fetch.mp3?dl=0>         | n/a                                                                                                                 |
+    * | `LOCATION_SAMPLE`          | <mediaplayer:https://dl.dropbox.com/s/8gp2nkzza2hql4r/location-sample.mp3?dl=0>          | <mediaplayer:https://dl.dropboxusercontent.com/s/8bgiyifowyf9c7n/tslocationmanager_click_tap_done_checkbox5_full_vol.wav?dl=0> |
+    * | `LOCATION_ERROR`           | <mediaplayer:https://dl.dropbox.com/s/l3rmf99rj3g5u6b/location-error.mp3?dl=0>           | <mediaplayer:https://dl.dropboxusercontent.com/s/wadrz2x6elhc65l/tslocationmanager_digi_warn.mp3?dl=0>                         |
+    * | `LOCATION_SERVICES_ON`     | <mediaplayer:https://dl.dropbox.com/s/urbjiqn0f4g1jhi/location-services-on.mp3?dl=0>     | n/a                                                                                                                 |
+    * | `LOCATION_SERVICES_OFF`    | <mediaplayer:https://dl.dropbox.com/s/0wb7qajfb0yy9w0/location-services-off.mp3?dl=0>    | n/a                                                                                                                 |
+    * | `STATIONARY_GEOFENCE_EXIT` | <mediaplayer:https://dl.dropbox.com/s/p8ee60qvfgx4vi5/motionchange-true.mp3?dl=0>        | <mediaplayer:https://dl.dropboxusercontent.com/s/gjgv51pot3h2n3t/tslocationmanager_zap_fast.mp3?dl=0>                          |
+    * | `MOTIONCHANGE_FALSE`       | <mediaplayer:https://dl.dropbox.com/s/xk00hsfi87nrw3q/motionchange-false.mp3?dl=0>       | <mediaplayer:https://dl.dropboxusercontent.com/s/fm4j2t8nqzd5856/tslocationmanager_marimba_drop.mp3?dl=0>                      |
+    * | `MOTIONCHANGE_TRUE`        | <mediaplayer:https://dl.dropbox.com/s/p8ee60qvfgx4vi5/motionchange-true.mp3?dl=0>        | <mediaplayer:https://dl.dropboxusercontent.com/s/n5mn6tr7x994ivg/tslocationmanager_chime_short_chord_up.mp3?dl=0>              |
+    * | `MOTION_TRIGGER_DELAY_START` | n/a | <mediaplayer:https://dl.dropboxusercontent.com/s/cb3fa0zp0c4xjmt/tslocationmanager_dot_retry.wav?dl=0>                                                                                                            |
+    * | `MOTION_TRIGGER_DELAY_CANCEL`| n/a | <mediaplayer:https://dl.dropboxusercontent.com/s/4pg3r4xooi9pe0g/tslocationmanager_dot_stopaction2.wav?dl=0>                                                                                                      |
+    * | `STOP_DETECTION_DELAY_INITIATED` | <mediaplayer:https://dl.dropbox.com/s/y898zopjfolx42d/stopDetectionDelay.mp3?dl=0> | n/a                                                                                                                 |
+    * | `STOP_TIMER_ON`            | <mediaplayer:https://dl.dropbox.com/s/7mjcmnszhjo6ywj/stop-timeout-start.mp3?dl=0>       | <mediaplayer:https://dl.dropboxusercontent.com/s/q4a9pf0vlztfafh/tslocationmanager_chime_bell_confirm.mp3?dl=0>                |
+    * | `STOP_TIMER_OFF`           | <mediaplayer:https://dl.dropbox.com/s/qnsdu7b6vxic01i/stop-timeout-cancel.mp3?dl=0>      | <mediaplayer:https://dl.dropboxusercontent.com/s/9o9v826was19lyi/tslocationmanager_bell_ding_pop.mp3?dl=0>                     |
+    * | `HEARTBEAT`                | <mediaplayer:https://dl.dropbox.com/s/90vyfo3woe52ijo/heartbeat.mp3?dl=0>                | <mediaplayer:https://dl.dropboxusercontent.com/s/bsdtw21hscqqy67/tslocationmanager_peep_note1.wav?dl=0>                        |
+    * | `GEOFENCE_ENTER`           | <mediaplayer:https://dl.dropbox.com/s/h3047lybsggats7/geofence-enter.mp3?dl=0>           | <mediaplayer:https://dl.dropboxusercontent.com/s/76up5ik215xwxh1/tslocationmanager_beep_trip_up_dry.mp3?dl=0>                  |
+    * | `GEOFENCE_EXIT`            | <mediaplayer:https://dl.dropbox.com/s/2e8bg22c6g9zwxr/geofence-exit.mp3?dl=0>            | <mediaplayer:https://dl.dropboxusercontent.com/s/xuyyagffheyk8r7/tslocationmanager_beep_trip_dry.mp3?dl=0>                     |
+    * | `GEOFENCE_DWELL_START`     | <mediaplayer:https://dl.dropbox.com/s/7nysvyjxuxm9pms/geofence-dwell-start.mp3?dl=0>     | n/a                                                                                                                 |
+    * | `GEOFENCE_DWELL_CANCEL`    | <mediaplayer:https://dl.dropbox.com/s/sk2hur6nxch1zvm/geofence-dwell-cancel.mp3?dl=0>    | n/a                                                                                                                 |
+    * | `GEOFENCE_DWELL`           | `GEOFENCE_ENTER` after `GEOFENCE_DWELL_START`                                            | <mediaplayer:https://dl.dropboxusercontent.com/s/uw5vjuatm3wnuid/tslocationmanager_beep_trip_up_echo.mp3?dl=0>                 |
+    * | `ERROR`                    | <mediaplayer:https://dl.dropbox.com/s/h5b52m056pfc734/error.mp3?dl=0>                    | <mediaplayer:https://dl.dropboxusercontent.com/s/32e93c1t4kh69p1/tslocationmanager_music_timpani_error_01.mp3?dl=0>            |
+    * | `WARNING`                  | n/a                                                                                      | <mediaplayer:https://dl.dropboxusercontent.com/s/wadrz2x6elhc65l/tslocationmanager_digi_warn.mp3?dl=0>                         |
+    * | `BACKGROUND_FETCH`         | <mediaplayer:https://dl.dropbox.com/s/mcsjqye0xx2kapk/background-fetch.mp3?dl=0>         | n/a                                                                                                                 |
     *
     */
     debug?: boolean;
@@ -1508,7 +1702,7 @@ declare module "react-native-background-geolocation" {
     *```
     *
     * @example
-  	* ```javascript
+  	* ```typescript
     * BackgroundGeolocation.ready({
     *   logLevel: BackgroundGeolocation.LOG_LEVEL_VERBOSE
     * });
@@ -1547,7 +1741,7 @@ declare module "react-native-background-geolocation" {
     * Optionally, you can specify **`reset: false`** to [[BackgroundGeolocation.ready]].
     *
     * @example
-  	* ```javascript
+  	* ```typescript
     * await BackgroundGeolocation.setConfig({
     *   distanceFilter: 100
     * });
@@ -1556,7 +1750,7 @@ declare module "react-native-background-geolocation" {
     *   reset: false,  // <-- set false to ALWAYS re-apply persisted configuration, ignoring config provided to `#ready`
     *   distanceFilter: 50
     * }, (state) => {
-    *   console.log('Ready with reset: false: ', state.distanceFilter);  // <-- 100, not 10
+    *   console.log("Ready with reset: false: ", state.distanceFilter);  // <-- 100, not 10
     * });
     * ```
     */
@@ -1581,10 +1775,10 @@ declare module "react-native-background-geolocation" {
     *
     * A location will be recorded several times per hour while the device is in the *moving* state.  No foreground-service will be run (nor its corresponding persistent [[Notification]]).
     *
-    * @example **`useSignificantChanges: true`**
+    * @example **`useSignificantChangesOnly: true`**
     * ![](https://dl.dropboxusercontent.com/s/wdl9e156myv5b34/useSignificantChangesOnly.png?dl=1)
     *
-    * @example **`useSignificantChanges: false` (Default)**
+    * @example **`useSignificantChangesOnly: false` (Default)**
     * ![](https://dl.dropboxusercontent.com/s/hcxby3sujqanv9q/useSignificantChangesOnly-false.png?dl=1)
     */
     useSignificantChangesOnly?: boolean;
@@ -1599,6 +1793,17 @@ declare module "react-native-background-geolocation" {
     * The default behavior of the plugin is to turn **off** location-services *automatically* when the device is detected to be stationary for [[stopTimeout]] minutes.  When set to `false`, location-services will **never** be turned off (and [[disableStopDetection]] will automatically be set to `true`) &mdash; it's your responsibility to turn them off when you no longer need to track the device.  This feature should **not** generally be used.  [[preventSuspend]] will no longer work either.
     */
     pausesLocationUpdatesAutomatically?: boolean;
+
+    /**
+    * [__iOS Only__] A Boolean indicating whether the status bar changes its appearance when an app uses location services in the background with `Always` authorization.
+    *
+    * The default value of this property is `false`. The background location usage indicator is a blue bar or a blue pill in the status bar on iOS; on watchOS the indicator is a small icon. Users can tap the indicator to return to your app.
+    *
+    * This property affects only apps that received `Always` authorization. When such an app moves to the background, the system uses this property to determine whether to change the status bar appearance to indicate that location services are in use. Set this value to true to maintain transparency with the user.
+    *
+    * For apps with When In Use authorization, the system changes the appearance of the status bar when the app uses location services in the background.
+    */
+    showsBackgroundLocationIndicator?: boolean;
 
     /**
     * Defines the *desired* location-authorization request you *wish* for the user to authorize: "Always" or "When In Use".
@@ -1626,14 +1831,14 @@ declare module "react-native-background-geolocation" {
     * ![](https://dl.dropboxusercontent.com/s/wyoaf16buwsw7ed/docs-locationAuthorizationAlert.jpg?dl=1)
     *
     * @example
-  	* ```javascript
+  	* ```typescript
     * BackgroundGeolocation.ready({
     *   locationAuthorizationAlert: {
-    *     titleWhenNotEnabled: 'Yo, location-services not enabled',
-    *     titleWhenOff: 'Yo, location-services OFF',
-    *     instructions: 'You must enable "Always" in location-services, buddy',
-    *     cancelButton: 'Cancel',
-    *     settingsButton: 'Settings'
+    *     titleWhenNotEnabled: "Yo, location-services not enabled",
+    *     titleWhenOff: "Yo, location-services OFF",
+    *     instructions: "You must enable 'Always' in location-services, buddy",
+    *     cancelButton: "Cancel",
+    *     settingsButton: "Settings"
     *   }
     * })
     * ```
@@ -1667,12 +1872,12 @@ declare module "react-native-background-geolocation" {
     * - [[BackgroundGeolocation.requestPermission]]
     *
     * @example
-  	* ```javascript
+  	* ```typescript
     * BackgroundGeolocation.onProviderChange((event) => {
-    *   console.log('[onProviderChange] ', event);
+    *   console.log("[onProviderChange] ", event);
     *
     *   if (!provider.enabled) {
-    *     alert('Please enable location services');
+    *     alert("Please enable location services");
     *   }
     * });
     *
@@ -1696,7 +1901,7 @@ declare module "react-native-background-geolocation" {
     * | [[BackgroundGeolocation.ACTIVITY_TYPE_OTHER_NAVIGATION]]       |
     *
     * @example
-  	* ```javascript
+  	* ```typescript
     * BackgroundGeolocation.ready({
     *   activityType: BackgroundGeolocation.ACTIVITY_TYPE_OTHER
     * );
@@ -1723,17 +1928,32 @@ declare module "react-native-background-geolocation" {
     stopDetectionDelay?: number;
 
     /**
-    * __`[iOS only]`__ Disable the plugin requesting "Motion & Fitness" authorization from the User.
+    * Disable the plugin requesting "Motion & Fitness" (ios) or "Physical Activity" (android >= 10) authorization from the User.
     * @break
     *
-    * Defaults to **`false`**.  Set **`true`** to disable iOS [`CMMotionActivityManager`](https://developer.apple.com/reference/coremotion/cmmotionactivitymanager)-based motion-activity updates (eg: `walking`, `in_vehicle`).  This feature requires a device having the **M7** co-processor (ie: iPhone 5s and up).
+    * Defaults to **`false`**.  Set to **`true`** to disable asking the user for this permission.
     *
-    * ### ⚠️ Warning:
-    * - The plugin is **HIGHLY** optimized for motion-activity-updates.  If you **do** disable this, the plugin *will* drain more battery power.  You are **STRONGLY** advised against disabling this.  You should explain to your users with an appropriate `NSMotionUsageDescription` in your `Info.plist` file, for example:
+    * ## iOS
+    *
+    * ![](https://dl.dropbox.com/s/v3qt7ry1k4b3iir/ios-motion-permission.png?dl=1)
+    *
+    * The plugin is **HIGHLY** optimized for motion-activity-updates.  If you **do** disable this, the plugin *will* drain more battery power.  You are **STRONGLY** advised against disabling this.  You should explain to your users with an appropriate `NSMotionUsageDescription` in your `Info.plist` file, for example:
     * > "Motion activity detection increases battery efficiency by intelligently toggling location-tracking" off when your device is detected to be stationary.
     *
-    * ### ℹ️ Note:
-    * - This feature will ask the user for "Health updates" permission using the **`NSMotionUsageDescription`** in your `Info.plist`.  If you do not wish to ask the user for the "Health updates", set this option to `true`; However, you will no longer receive accurate activity data in the recorded locations.
+    * ## Android
+    *
+    * Android 10+ now requires run-time permission from the user for "Physical Activity".
+    * ![](https://dl.dropbox.com/s/6v4391oz592bdjg/android-permission-physical-activity.png?dl=1)
+    *
+    * Traditionally, the `background-geolocation` Android SDK has relied heavily upon the Motion API for determining when to toggle location-services on/off based upon whether the device is *moving* vs *stationary*.
+    * However, the Android SDK has a fallback "stationary geofence" mechanism just like iOS, the exit of which will cause the plugin to change to the *moving* state, toggle location-services and begin tracking.  This will, of course, require the device moves a distance of typically **200-500 meters** before tracking engages.  With the Motion API authorized, the Android SDK typically requires just **a few meters** of movement for tracking to engage.
+    *
+    * @example
+    * ```typescript
+    * BackgroundGeolocation.ready({
+    *   disableMotionActivityUpdates: true
+    * });
+    * ```
     */
     disableMotionActivityUpdates?: boolean;
 
@@ -1747,9 +1967,9 @@ declare module "react-native-background-geolocation" {
     * - When a device is unplugged form power with the screen off, iOS will *still* throttle [[BackgroundGeolocation.onHeartbeat]] events about 2 minutes after entering the background state.  However, if the screen is lit up or even the *slightest* device-motion is detected, [[BackgroundGeolocation.onHeartbeat]] events will immediately resume.
     *
     * @example
-  	* ```javascript
+  	* ```typescript
     * BackgroundGeolocation.onHeartbeat((event) => {
-    *   console.log('[onHeartbeat] ', event);
+    *   console.log("[onHeartbeat] ", event);
     * });
     *
     * BackgroundGeolocation.ready({
@@ -1780,7 +2000,7 @@ declare module "react-native-background-geolocation" {
     * Applications with only the coarse location permission may have their interval silently throttled.\
     *
     * @example
-  	* ```javascript
+  	* ```typescript
     * BackgroundGeolocation.ready({
     *   distanceFilter: 0,            // Must be 0 or locationUpdateInterval is ignored!
     *   locationUpdateInterval: 5000  // Get a location every 5 seconds
@@ -1888,19 +2108,58 @@ declare module "react-native-background-geolocation" {
     *
     *
     * @example
-  	* ```javascript
+  	* ```typescript
     * // Only trigger tracking for vehicles
     * BackgroundGeolocation.ready({
-    *   triggerActivities: 'in_vehicle'
+    *   triggerActivities: "in_vehicle"
     * );
     *
     * // Only trigger tracking for on_foot, walking and running
     * BackgroundGeolocation.ready({
-    *   triggerActivities: 'on_foot, walking, running'
+    *   triggerActivities: "on_foot, walking, running"
     * );
     * ```
     */
     triggerActivities?: string;
+
+    /**
+    * __`[Android only]`__  Optionally add a delay in milliseconds to trigger Android into the *moving* state when Motion API reports the device is moving (eg: `on_foot`, `in_vehicle`)
+    *
+    * This can help prevent false-positive motion-triggering when one moves about their home, for example.  Only if the Motion API stays in the *moving* state for `motionTriggerDelay` milliseconds will the plugin trigger into the *moving* state and begin tracking the location.
+    * If the Motion API returns to the `still` state before `motionTriggerDelay` times-out, the trigger to the *moving* state will be cancelled.
+    *
+    * @example
+    * ```typescript
+    * // Delay Android motion-triggering by 30000ms
+    * BackgroundGeolocation.ready({
+    *   motionTriggerDelay: 30000
+    * })
+    * ```
+    * @break
+    * The following `logcat` shows an Android device detecting motion __`on_foot`__ but returning to __`still`__ before __`motionTriggerDelay`__ expires, cancelling the transition to the *moving* state (see `⏰ Cancel OneShot: MOTION_TRIGGER_DELAY`):
+    * @logcat
+    * ```bash
+    *  04-08 10:58:03.419 TSLocationManager: ╔═════════════════════════════════════════════
+    *  04-08 10:58:03.419 TSLocationManager: ║ Motion Transition Result
+    *  04-08 10:58:03.419 TSLocationManager: ╠═════════════════════════════════════════════
+    *  04-08 10:58:03.419 TSLocationManager: ╟─ 🔴  EXIT: still
+    *  04-08 10:58:03.419 TSLocationManager: ╟─ 🎾  ENTER: on_foot
+    *  04-08 10:58:03.419 TSLocationManager: ╚═════════════════════════════════════════════
+    *  04-08 10:58:03.416 TSLocationManager:   ⏰ Scheduled OneShot: MOTION_TRIGGER_DELAY in 30000ms
+    *  .
+    *  . <motionTriggerDelay timer started>
+    *  .
+    *  04-08 10:58:19.385 TSLocationManager: ╔═════════════════════════════════════════════
+    *  04-08 10:58:19.385 TSLocationManager: ║ Motion Transition Result
+    *  04-08 10:58:19.385 TSLocationManager: ╠═════════════════════════════════════════════
+    *  04-08 10:58:19.385 TSLocationManager: ╟─ 🔴  EXIT: on_foot
+    *  04-08 10:58:19.385 TSLocationManager: ╟─ 🎾  ENTER: still
+    *  04-08 10:58:19.385 TSLocationManager: ╚═════════════════════════════════════════════
+    *  04-08 10:58:19.381 TSLocationManager: [c.t.l.s.TSScheduleManager cancelOneShot]
+    *  04-08 10:58:19.381 TSLocationManager:   ⏰ Cancel OneShot: MOTION_TRIGGER_DELAY <-- timer cancelled
+    * ```
+    */
+    motionTriggerDelay?: number;
 
     /**
     * __`[Android only]`__ Enables "Headless" operation allowing you to respond to events after you app has been terminated with [[stopOnTerminate]] __`false`__.
@@ -1939,6 +2198,8 @@ declare module "react-native-background-geolocation" {
     foregroundService?: boolean;
 
     /**
+    * @deprecated __Banned in Android 10.  Use [[Config.enableHeadless]] instead.__
+    *
     * Force launch your terminated App after a [[BackgroundGeolocation.onLocation]] event.
     * @break
     *
@@ -1950,6 +2211,8 @@ declare module "react-native-background-geolocation" {
     forceReloadOnLocationChange?: boolean;
 
     /**
+    * @deprecated __Banned in Android 10.  Use [[Config.enableHeadless]] instead.__
+    *
     * Force launch your terminated App after a [[BackgroundGeolocation.onMotionChange]] event.
     * @break
     *
@@ -1961,6 +2224,8 @@ declare module "react-native-background-geolocation" {
     forceReloadOnMotionChange?: boolean;
 
     /**
+    * @deprecated __Banned in Android 10.  Use [[Config.enableHeadless]] instead.__
+    *
     * Force launch your terminated App after a [[BackgroundGeolocation.onGeofence]] event.
     * @break
     *
@@ -1972,6 +2237,8 @@ declare module "react-native-background-geolocation" {
     forceReloadOnGeofence?: boolean;
 
     /**
+    * @deprecated __Banned in Android 10.  Use [[Config.enableHeadless]] instead.__
+    *
     * Force launch your terminated App after a device reboot or application update.
     * @break
     *
@@ -1983,6 +2250,8 @@ declare module "react-native-background-geolocation" {
     forceReloadOnBoot?: boolean;
 
     /**
+    * @deprecated __Banned in Android 10.  Use [[Config.enableHeadless]] instead.__
+    *
     * Force launch your terminated App after a [[BackgroundGeolocation.onHeartbeat]] event.
     * @break
     *
@@ -1994,6 +2263,8 @@ declare module "react-native-background-geolocation" {
     forceReloadOnHeartbeat?: boolean;
 
     /**
+    * @deprecated __Banned in Android 10.  Use [[Config.enableHeadless]] instead.__
+    *
     * Force launch your terminated App after a [[BackgroundGeolocation.onSchedule]] event.
     * @break
     *
@@ -2015,8 +2286,8 @@ declare module "react-native-background-geolocation" {
     * ```typescript
     * BackgroundGeolocation.ready({
     *   notification: {
-    *     title: 'Background tracking engaged',
-    *     text: 'My notification text'
+    *     title: "Background tracking engaged",
+    *     text: "My notification text"
     *   }
     * })
     * ```

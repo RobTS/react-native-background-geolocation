@@ -65,6 +65,8 @@ public class HeadlessTask {
             params = event.getBootEvent();
         } else if (name.equals(BackgroundGeolocation.EVENT_GEOFENCE)) {
             params = event.getGeofenceEvent().toJson();
+        } else if (name.equals(BackgroundGeolocation.EVENT_GEOFENCESCHANGE)) {
+            params = event.getGeofencesChangeEvent().toJson();
         } else if (name.equals(BackgroundGeolocation.EVENT_HEARTBEAT)) {
             params = event.getHeartbeatEvent().toJson();
         } else if (name.equals(BackgroundGeolocation.EVENT_POWERSAVECHANGE)) {
@@ -75,6 +77,8 @@ public class HeadlessTask {
             clientEvent.putBoolean("params", event.getEnabledChangeEvent());
         } else if (name.equals(BackgroundGeolocation.EVENT_NOTIFICATIONACTION)) {
             clientEvent.putString("params", event.getNotificationEvent());
+        } else if (name.equals(BackgroundGeolocation.EVENT_AUTHORIZATION)) {
+            params = event.getAuthorizationEvent().toJson();
         } else {
             TSLog.logger.warn(TSLog.warn("Unknown Headless Event: " + name));
             clientEvent.putString("error", "Unknown event: " + name);

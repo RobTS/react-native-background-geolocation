@@ -1,5 +1,97 @@
 # Change Log
 
+## 3.6.2 - 2020-04-08
+- [Added] [Android] Add new `Config.motionTriggerDelay (milliseconds)` for preventing false-positive triggering of location-tracking (while walking around one's house, for example).  If the motion API triggers back to `still` before `motionTriggerDelay` expires, triggering to the *moving* state will be cancelled.
+- [Fixed] Address issue with rare reports of iOS crashing with error referencing `SOMotionDetector.m`.
+- [Fixed] Odometer issue with Android/iOS:  Do not persist `lastOdometerLocation` when plugin is disabled.
+- [Added] iOS `Config.showsBackgroundLocationIndicator`, A Boolean indicating whether the status bar changes its appearance when an app uses location services in the background.
+- [Changed] `cordova-plugin-background-fetch` dependency updated to `3.x` with new iOS 13 `BGTaskScheduler` API.
+- [Fixed] `synchronize` methods in `TSLocationManager` to address Android NPE related to `buildTSLocation`.
+- [Fixed] Typescript declaration for `Location.isMoving` should be `Location.is_moving`.
+- [Fixed] iOS:  Bug in `accessToken` RegExp in Authorization token-refresh handler.
+- [Fixed] Part of the raw Javascript API contained typescript, which would cause an error on older mobile browser versions.
+- [Added] Implement four new RPC commands `addGeofence`, `removeGeofence`, `addGeofences`, `removeGeofences`.  Document available RPC commands in "HttpGuide".
+- [Fixed] Android: launch-Intent for foreground-service notification was causing notification-click to re-launch the Activity rather than show existing.
+- [Changed] Android: Modify behaviour of geofences-only mode to not periodically request location-updates.  Will use a stationary-geofence of radius geofenceProximityRadius/2 as a trigger to re-evaluate geofences in proximity.
+- [Changed] iOS: Prefix FMDB method-names `databasePool` -> `ts_databasePool` after reports of apps being falsely rejected by Apple for "private API usage".
+- [Fixed] Android: Ensure that `location.hasSpeed()` before attempting to use it for distanceFilter elasticity calculations.  There was a report of a Device returning `Nan` for speed.
+- [Fixed] Android:  Do not throttle http requests after http connect failure when configured with `maxRecordsToPersist`.
+- [Fixed] Android: Respect `disableLocationAuthorizationAlert` for all cases, including `getCurrentPosition`.
+- [Changed] Android: Modify behaviour of geofences-only mode to not periodically request location-updates.  Will use a stationary-geofence of radius geofenceProximityRadius/2 as a trigger to re-evaluate geofences in proximity.
+- [Changed] Authorization `refreshUrl` will post as application/x-www-form-urlencoded instead of form/multipart
+- [Changed] iOS geofencing mode will not engage Significant Location Changes API when total geofence count <= 18 in order to prevent new iOS 13 "Location summary" popup from showing frequent location access.
+- [Fixed] Android:  Add hack for older devices to fix "GPS Week Rollover" bug where incorrect timestamp is recorded from GPS (typically where year is older by 20 years).
+- [Fixed] When determining geofences within `geofenceProximityRadius`, add the `location.accuracy` as a buffer against low-accuracy locations.
+- [Changed] Increase default `geofenceProximityRadius: 2000`.
+
+## 3.4.2 - 2019-12-03
+- [Fixed] iOS crash when launching first time `-[__NSDictionaryM setObject:forKey:]: object cannot be nil (key: authorization)'`
+- [Changed] Remove Android warning `In order to enable encryption, you must provide the com.transistorsoft.locationmanager.ENCRYPTION_PASSWORD` when using `encrypt: false`.
+- [Fixed] Added headless implementation for `geofenceschange` event.
+
+## 3.4.1 - 2019-12-02
+- [Fixed] Android bug rendering `Authorization.toJson` when no `Config.authorization` defined.
+
+## 3.4.0 - 2019-12-02
+- [Added] New `Config.authorization` option for automated authorization-token support.  If the SDK receives an HTTP response status `401 Unauthorized` and you've provided an `authorization` config, the plugin will automatically send a request to your configured `refreshUrl` to request a new token.  The SDK will take care of adding the required `Authorization` HTTP header with `Bearer accessToken`.  In the past, one would manage token-refresh by listening to the SDK's `onHttp` listener for HTTP `401`.  This can now all be managed by the SDK by providing a `Config.authorization`.
+- [Added] Implemented strong encryption support via `Config.encrypt`.  When enabled, the SDK will encrypt location data in its SQLite datbase, as well as the payload in HTTP requests.  See API docs `Config.encrypt` for more information, including the configuration of encryption password.
+- [Added] New JSON Web Token API for the Demo server at http://tracker.transistorsoft.com.  It's now easier than ever to configure the plugin to post to the demo server.  See API docs `Config.transistorAuthorizationToken`.  The old method using `BackgroundGeolocation.transistorTrackerParams` is now deprecated.
+- [Added] New `DeviceInfo` module for providing simple device-info (`model`, `manufacturer`, `version`, `platform`).
+
+## 3.3.2 - 2019-10-25
+- [Fixed] Android bug in params order to getLog.  Thanks @mikehardy.
+- [Fixed] Typo in Javascript API callback in `destroyLog`.  Thanks @mikehardy.
+
+## 3.3.1 - 2019-10-23
+- [Fixed] Android NPE
+```
+Caused by: java.lang.NullPointerException:
+  at com.transistorsoft.locationmanager.service.TrackingService.b (TrackingService.java:172)
+  at com.transistorsoft.locationmanager.service.TrackingService.onStartCommand (TrackingService.java:135)
+```
+- [Added] new `uploadLog` feature for uploading logs directly to a server.  This is an alternative to `emailLog`.
+- [Changed] Migrated logging methods `getLog`, `destroyLog`, `emailLog` to new `Logger` module available at `BackgroundGeolocation.logger`.  See docs for more information.  Existing log methods on `BackgroundGeolocation` are now `@deprecated`.
+- [Changed] All logging methods (`getLog`, `emailLog` and `uploadLog`) now accept an optional `SQLQuery`.  Eg:
+```javascript
+let query = {
+  start: Date.parse('2019-10-23 09:00'),
+  end: Date.parse('2019-10-23 19:00'),
+  limit: 1000,
+  order: Logger.ORDER_ASC
+};
+let Logger = BackgroundGeolocation.logger;
+
+let log = await Logger.getLog(query)
+Logger.emailLog('foo@bar.com', query);
+Logger.uploadLoad('http://your.server.com/logs', query);
+```
+
+
+## 3.3.0 - 2019-10-17
+- [Fixed] Android: Fixed issue executing `#changePace` immediately after `#start`.
+- [Fixed] Android:  Add guard against NPR in `calculateMedianAccuracy`
+- [Added] Add new Geofencing methods: `#getGeofence(identifier)` and `#geofenceExists(identifier)`.
+- [Fixed] iOS issue using `disableMotionActivityUpdates: false` with `useSignificantChangesOnly: true` and `reset: true`.  Plugin will accidentally ask for Motion Permission.  Fixes #1992.
+- [Fixed] Resolved a number of Android issues exposed by booting the app in [StrictMode](https://developer.android.com/reference/android/os/StrictMode).  This should definitely help alleviate ANR issues related to `Context.startForegroundService`.
+- [Added] Android now supports `disableMotionActivityUpdates` for Android 10 which now requires run-time permission for "Physical Activity".  Setting to `true` will not ask user for this permission.  The plugin will fallback to using the "stationary geofence" triggering, like iOS.
+- [Changed] Android:  Ensure all code that accesses the database is performed in background-threads, including all logging (addresses `Context.startForegroundService` ANR issue).
+- [Changed] Android:  Ensure all geofence event-handling is performed in background-threads (addresses `Context.startForegroundService` ANR issue).
+- [Added] Android: implement logic to handle operation without Motion API on Android 10.  v3 has always used a "stationary geofence" like iOS as a fail-safe, but this is now crucial for Android 10 which now requires run-time permission for "Physical Activity".  For those users who [Deny] this permission, Android will trigger tracking in a manner similar to iOS (ie: requiring movement of about 200 meters).  This also requires handling to detect when the device has become stationary.
+
+## [3.2.2] - 2019-09-18
+- [Changed] Android:  move more location-handling code into background-threads to help mitigate against ANR referencing `Context.startForegroundService`
+- [Changed] Android:  If BackgroundGeolocation adapter is instantiated headless and is enabled, force ActivityRecognitionService to start.
+- [Added] Add `mock` to `locationTemplate` data.
+- [Changed] Android now hosts its own `proguard-rules.pro`.  See Android setup docs for new integration of plugin's required Proguard Rules into your app.
+Replace `@available` macro with `SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO`.
+- [Fixed] iOS 13 preventSuspend was not working with iOS 13.  iOS has once again decreased the max time for UIApplication beginBackgroundTask from 180s down to 30s.
+- [Changed] Upgrade `android-logback` dependency to `2.0.0`
+- [Changed] Android: move some plugin initialization into background-threads (eg: `performLogCleanup`) to help mitigate against ANR "`Context.startForegroundService` did not then call `Service.startForeground`".
+- [Fixed] Android Initial headless events can be missed when app booted due to motion transition event.
+- [Fixed] Android crash with EventBus `Subscriber already registered error`.
+- [Fixed] iOS `Crash: [TSHttpService postBatch:error:] + 6335064 (TSHttpService.m:253)`
+- [Changed] Minor changes to `build.gradle`: fetch `minSdkVersion` from `ext` instead of hard-coding, use `implementation` with `react` instead of `compileOnly`.
+
 ## [3.2.0] - 2019-08-16
 - [Added] iOS 13 support.
 - [Added] Auto-linking support.  Do not use `react-native link` anymore.  See the Setup docs for Android and iOS.  Before installing `3.2.0`, first `react-native unlink` both `background-geolocation` and `background-fetch`.

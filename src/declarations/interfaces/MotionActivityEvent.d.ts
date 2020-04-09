@@ -5,7 +5,7 @@ declare module "react-native-background-geolocation" {
   * @example
   * ```typescript
   * BackgroundGeolocation.onActivityChange(activityChangeEvent => {
-  *   console.log('[activitychange] ', activityChangeEvent.activity, activityChangeEvent.confidence);
+  *   console.log("[activitychange] ", activityChangeEvent.activity, activityChangeEvent.confidence);
   * });
   * ```
   */
@@ -15,11 +15,12 @@ declare module "react-native-background-geolocation" {
     *
     * | Activity Name  |
     * |----------------|
-    * | `in_vehicle`   |
-    * | `on_bicycle`   |
+    * | `still`        |
+    * | `walking`      |
     * | `on_foot`      |
     * | `running`      |
-    * | `walking`      |
+    * | `on_bicycle`   |
+    * | `in_vehicle`   |
     */
     activity: string;
     /**
